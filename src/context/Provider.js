@@ -1,10 +1,26 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
 import Context from './Context';
 
 function Provider({ children }) {
-  const [state] = useState('');
+  const [titleHeader, setTitleHeader] = useState('Title');
+  const [loadingSearch, setLoadingSearch] = useState(true);
 
-  const values = useMemo(() => (state), [state]);
+  const values = useMemo(
+    () => ({
+      titleHeader,
+      setTitleHeader,
+      loadingSearch,
+      setLoadingSearch,
+    }),
+    [
+      titleHeader,
+      setTitleHeader,
+      loadingSearch,
+      setLoadingSearch,
+
+    ],
+  );
 
   return (
     <Context.Provider value={ values }>
