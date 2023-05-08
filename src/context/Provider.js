@@ -6,6 +6,7 @@ function Provider({ children }) {
   const [state] = useState('');
   const [inputEmail, setinputEmail] = useState('');
   const [inputPassword, setinputPassword] = useState('');
+  const [disableButton, setdisableButton] = useState(false);
 
   const values = useMemo(() => ({
     state,
@@ -13,7 +14,16 @@ function Provider({ children }) {
     setinputEmail,
     inputPassword,
     setinputPassword,
-  }), [state, setinputEmail, inputEmail, inputPassword, setinputPassword]);
+    disableButton,
+    setdisableButton,
+  }), [state,
+    setinputEmail,
+    inputEmail,
+    inputPassword,
+    setinputPassword,
+    disableButton,
+    setdisableButton,
+  ]);
 
   return (
     <Context.Provider value={ values }>
