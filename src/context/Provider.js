@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
 
