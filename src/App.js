@@ -10,7 +10,7 @@ import MealsDetails from './Pages/MealsDetails';
 import DrinksDetails from './Pages/DrinksDetails';
 import DrinksProgress from './Pages/DrinksProgress';
 import MealsProgress from './Pages/MealsProgress';
-import Login from './Pages/Login';
+import Login from './Components/Login';
 
 function App() {
   return (

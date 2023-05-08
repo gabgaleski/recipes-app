@@ -6,6 +6,7 @@ function Provider({ children }) {
   const [titleHeader, setTitleHeader] = useState('Title');
   const [loadingSearch, setLoadingSearch] = useState(true);
   const [textSearch, setTextSearch] = useState('');
+  const [recipesSearch, setRecipesSearch] = useState([]);
 
   const values = useMemo(
     () => ({
@@ -15,6 +16,8 @@ function Provider({ children }) {
       setLoadingSearch,
       textSearch,
       setTextSearch,
+      recipesSearch,
+      setRecipesSearch,
     }),
     [
       titleHeader,
@@ -23,6 +26,8 @@ function Provider({ children }) {
       setLoadingSearch,
       textSearch,
       setTextSearch,
+      recipesSearch,
+      setRecipesSearch,
     ],
   );
 

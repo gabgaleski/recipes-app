@@ -1,22 +1,38 @@
 import React, { useState, useContext } from 'react';
 import Context from '../context/Context';
-import { ingredientFetch, nameFetch, firsLetterFetch } from '../Services/APIsFetch';
+import {
+  ingredientFetchMeal,
+  nameFetchMeal, firsLetterFetchMeal,
+  ingredientFetchDrink,
+  nameFetchDrink, firsLetterFetchDrink,
+} from '../Services/APIsFetch';
 
 export default function SearchBar() {
-  const { textSearch } = useContext(Context);
+  const { textSearch, titleHeader, setRecipesSearch } = useContext(Context);
   const [inputSearch, setInputSearch] = useState('');
 
-  const handleSubbmit = async () => {
+  const recipeFilter = async (ingredientAPI, nameAPI, firstLetterAPI) => {
     if (inputSearch === 'ingredient') {
-     const ingredients = await ingredientFetch(textSearch);
+      const ingredients = await ingredientAPI(textSearch);
+      setRecipesSearch(ingredients);
     } else if (inputSearch === 'name') {
-      const names = await nameFetch(textSearch);
+      const names = await nameAPI(textSearch);
+      setRecipesSearch(names);
     } else if (inputSearch === 'first-letter') {
       if (textSearch.length > 1) {
         global.alert('Your search must have only 1 (one) character');
       } else {
-      const firstLetters = await firsLetterFetch(textSearch);
+        const firstLetters = await firstLetterAPI(textSearch);
+        setRecipesSearch(firstLetters);
       }
+    }
+  };
+
+  const handleSubbmit = async () => {
+    if (titleHeader === 'Meals') {
+      recipeFilter(ingredientFetchMeal, nameFetchMeal, firsLetterFetchMeal);
+    } else {
+      recipeFilter(ingredientFetchDrink, nameFetchDrink, firsLetterFetchDrink);
     }
   };
 
