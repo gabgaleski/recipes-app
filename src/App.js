@@ -11,6 +11,7 @@ import MealsDetails from './Pages/MealsDetails';
 import DrinksDetails from './Pages/DrinksDetails';
 import DrinksProgress from './Pages/DrinksProgress';
 import MealsProgress from './Pages/MealsProgress';
+import Login from './Pages/Login';
 
 function App() {
   return (
@@ -28,8 +29,9 @@ function App() {
       <Route exact path="/profile" component={ Profile } />
       <Route exact path="/done-recipes" component={ Done } />
       <Route exact path="/favorite-recipes" component={ Favorites } />
-       <Route exact path="/" component={ Login } />
+      <Route exact path="/" component={ Login } />
     </Switch>
-
+  );
+}
 
 export default App;
