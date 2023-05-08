@@ -1,13 +1,13 @@
 import { useContext, useEffect } from 'react';
-import Header from '../Components/Header';
+import Header from '../components/Header';
 import Context from '../context/Context';
 
-function Meals() {
+function Profile() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
 
   useEffect(() => {
-    setTitleHeader('Meals');
-    setLoadingSearch(true);
+    setTitleHeader('Profile');
+    setLoadingSearch(false);
   }, [setTitleHeader, setLoadingSearch]);
 
   return (
@@ -17,4 +17,4 @@ function Meals() {
   );
 }
 
-export default Meals;
+export default Profile;

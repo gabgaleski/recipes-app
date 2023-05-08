@@ -1,12 +1,12 @@
 import { useContext, useEffect } from 'react';
-import Header from '../Components/Header';
+import Header from '../components/Header';
 import Context from '../context/Context';
 
-function Drinks() {
+function Meals() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
 
   useEffect(() => {
-    setTitleHeader('Drinks');
+    setTitleHeader('Meals');
     setLoadingSearch(true);
   }, [setTitleHeader, setLoadingSearch]);
 
@@ -17,4 +17,4 @@ function Drinks() {
   );
 }
 
-export default Drinks;
+export default Meals;

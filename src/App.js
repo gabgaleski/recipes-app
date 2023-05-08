@@ -2,15 +2,16 @@ import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, Switch } from 'react-router-dom';
-import Profile from './Pages/Profile';
-import Done from './Pages/Done';
-import Favorites from './Pages/Favorites';
-import Meals from './Pages/Meals';
-import Drinks from './Pages/Drinks';
-import MealsDetails from './Pages/MealsDetails';
-import DrinksDetails from './Pages/DrinksDetails';
-import DrinksProgress from './Pages/DrinksProgress';
-import MealsProgress from './Pages/MealsProgress';
+import Login from './components/Login';
+import Profile from './pages/Profile';
+import Done from './pages/Done';
+import Favorites from './pages/Favorites';
+import Meals from './pages/Meals';
+import Drinks from './pages/Drinks';
+import MealsDetails from './pages/MealsDetails';
+import DrinksDetails from './pages/DrinksDetails';
+import DrinksProgress from './pages/DrinksProgress';
+import MealsProgress from './pages/MealsProgress';
 
 function App() {
   return (
@@ -28,8 +29,9 @@ function App() {
       <Route exact path="/profile" component={ Profile } />
       <Route exact path="/done-recipes" component={ Done } />
       <Route exact path="/favorite-recipes" component={ Favorites } />
-       <Route exact path="/" component={ Login } />
+      <Route exact path="/" component={ Login } />
     </Switch>
-
+  );
+}
 
 export default App;
