@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import Header from '../Components/Header';
+import Header from '../components/Header';
 import Context from '../context/Context';
 
 function Done() {

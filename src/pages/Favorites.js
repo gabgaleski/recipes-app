@@ -1,12 +1,12 @@
 import { useContext, useEffect } from 'react';
-import Header from '../Components/Header';
+import Header from '../components/Header';
 import Context from '../context/Context';
 
-function Profile() {
+function Favorites() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
 
   useEffect(() => {
-    setTitleHeader('Profile');
+    setTitleHeader('Favorite Recipes');
     setLoadingSearch(false);
   }, [setTitleHeader, setLoadingSearch]);
 
@@ -17,4 +17,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default Favorites;
