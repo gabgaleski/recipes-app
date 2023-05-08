@@ -3,27 +3,24 @@ import PropTypes from 'prop-types';
 import Context from './Context';
 
 function Provider({ children }) {
-  const [state] = useState('');
-  const [inputEmail, setinputEmail] = useState('');
-  const [inputPassword, setinputPassword] = useState('');
-  const [disableButton, setdisableButton] = useState(false);
+  const [titleHeader, setTitleHeader] = useState('Title');
+  const [loadingSearch, setLoadingSearch] = useState(true);
 
-  const values = useMemo(() => ({
-    state,
-    inputEmail,
-    setinputEmail,
-    inputPassword,
-    setinputPassword,
-    disableButton,
-    setdisableButton,
-  }), [state,
-    setinputEmail,
-    inputEmail,
-    inputPassword,
-    setinputPassword,
-    disableButton,
-    setdisableButton,
-  ]);
+  const values = useMemo(
+    () => ({
+      titleHeader,
+      setTitleHeader,
+      loadingSearch,
+      setLoadingSearch,
+    }),
+    [
+      titleHeader,
+      setTitleHeader,
+      loadingSearch,
+      setLoadingSearch,
+
+    ],
+  );
 
   return (
     <Context.Provider value={ values }>
