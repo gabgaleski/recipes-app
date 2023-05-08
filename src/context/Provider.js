@@ -5,6 +5,7 @@ import Context from './Context';
 function Provider({ children }) {
   const [titleHeader, setTitleHeader] = useState('Title');
   const [loadingSearch, setLoadingSearch] = useState(true);
+  const [textSearch, setTextSearch] = useState('');
 
   const values = useMemo(
     () => ({
@@ -12,13 +13,16 @@ function Provider({ children }) {
       setTitleHeader,
       loadingSearch,
       setLoadingSearch,
+      textSearch,
+      setTextSearch,
     }),
     [
       titleHeader,
       setTitleHeader,
       loadingSearch,
       setLoadingSearch,
-
+      textSearch,
+      setTextSearch,
     ],
   );
 
