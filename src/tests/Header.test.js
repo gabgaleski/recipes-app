@@ -1,13 +1,50 @@
 import React from 'react';
-import App from '../App';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import Provider from '../context/Provider';
 import renderWithRouter from '../Services/RenderWithRouter';
+import Header from '../Components/Header';
 
 test('Farewell, front-end', () => {
   // Este arquivo pode ser modificado ou deletado sem problemas
   renderWithRouter(
     <Provider>
-      <App />
+      <Header />
     </Provider>,
   );
+
+  const imgProfile = screen.getByRole('img', {
+    name: /profile icon/i,
+  });
+
+  const title = screen.getByRole('heading', {
+    name: /title/i,
+  });
+
+  const imgSearch = screen.getByRole('img', {
+    name: /search icon/i,
+  });
+
+  const buttonSearch = screen.getByRole('button', {
+    name: /search icon/i,
+  });
+
+  act(() => {
+    userEvent.click(buttonSearch);
+  });
+
+  const textSearch = screen.getByRole('textbox');
+
+  expect(textSearch).toBeInTheDocument();
+  expect(buttonSearch).toBeInTheDocument();
+  expect(imgSearch).toBeInTheDocument();
+  expect(title).toBeInTheDocument();
+  expect(imgProfile).toBeInTheDocument();
+
+  act(() => {
+    userEvent.click(buttonSearch);
+  });
+
+  expect(textSearch).not.toBeInTheDocument();
 });
