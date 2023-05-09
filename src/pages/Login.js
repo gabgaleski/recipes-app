@@ -37,9 +37,6 @@ function Login() {
   return (
     <div>
       <form>
-        <button>
-          <img src=".." />
-        </button>
         <input
           type="email"
           data-testid="email-input"
