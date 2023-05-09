@@ -30,4 +30,11 @@ describe('Teste a tela de Login:', () => {
 
     expect(history.location.pathname).toBe('/meals');
   });
+  test('Verifica se o email é recuperado na localStorage e renderizado na tela;', () => {
+    renderWithRouter(
+      <Provider>
+        <Login />
+      </Provider>,
+    );
+  });
 });
