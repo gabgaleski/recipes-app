@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import Context from '../context/Context';
+import SearchBar from './SearchBar';
 
 function Header() {
-  const { titleHeader, loadingSearch } = useContext(Context);
+  const { titleHeader, loadingSearch, textSearch, setTextSearch } = useContext(Context);
   const [searchInput, setSearchInput] = useState(false);
 
   const searchOnClick = () => {
@@ -18,6 +19,7 @@ function Header() {
 
   return (
     <div>
+      <SearchBar />
       <Link to="/profile">
         <img
           data-testid="profile-top-btn"
@@ -36,7 +38,13 @@ function Header() {
                   />
                 </button>)
       }
-      {searchInput && <input type="text" data-testid="search-input" />}
+      {searchInput
+      && <input
+        type="text"
+        data-testid="search-input"
+        value={ textSearch }
+        onChange={ ({ target }) => setTextSearch(target.value) }
+      />}
       <h2 data-testid="page-title">{titleHeader}</h2>
     </div>
   );
