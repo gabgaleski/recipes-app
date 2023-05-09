@@ -7,7 +7,7 @@ import Provider from '../context/Provider';
 
 describe('Teste a tela de Login:', () => {
   test('Verifica se os inputs de email, password e o botão de Login são renderizados, se o botão é habilitado, e se é redirecionado para a pagina de receitas', () => {
-    const history = renderWithRouter(
+    const { history } = renderWithRouter(
       <Provider>
         <Login />
       </Provider>,
