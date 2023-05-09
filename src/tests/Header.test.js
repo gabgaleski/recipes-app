@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import Provider from '../context/Provider';
-import renderWithRouter from '../services/RenderWithRouter';
+import renderWithRouter from '../services/renderWithRouter';
 import Header from '../components/Header';
 
 test('Farewell, front-end', () => {

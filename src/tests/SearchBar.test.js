@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Provider from '../context/Provider';
-import renderWithRouter from '../services/RenderWithRouter';
+import renderWithRouter from '../services/renderWithRouter';
 import SearchBar from '../components/SearchBar';
 import App from '../App';
 import { mockMeals } from '../services/Mocks';
