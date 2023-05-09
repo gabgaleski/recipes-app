@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, act } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Provider from '../context/Provider';
 import renderWithRouter from '../services/renderWithRouter';
@@ -32,42 +32,34 @@ describe('', () => {
     expect(firstLetterInput).toBeInTheDocument();
     expect(searchButton).toBeInTheDocument();
   });
-  it('testa se input chama a função no componente drink', () => {
+  it('testa se input chama a função no componente drink', async () => {
     const { history } = renderWithRouter(
       <Provider>
         <App />
       </Provider>,
     );
 
-    act(() => {
-      history.push('/drinks');
-    });
+    history.push('/drinks');
 
-    const ingredientInput = screen.getByLabelText(/Ingredient:/i);
-    const nameInput = screen.getByLabelText(/name/i);
-    const firstLetterInput = screen.getByLabelText(/first letter/i);
+    const ingredientInput = await screen.findByLabelText(/Ingredient:/i);
+    const nameInput = await screen.findByLabelText(/name/i);
+    const firstLetterInput = await screen.findByLabelText(/first letter/i);
     const searchButton = screen.getByRole('button', {
       name: 'Busca',
     });
 
-    act(() => {
-      userEvent.click(ingredientInput);
-      userEvent.click(searchButton);
-    });
+    userEvent.click(ingredientInput);
+    userEvent.click(searchButton);
 
     expect(global.fetch).toHaveBeenCalled();
 
-    act(() => {
-      userEvent.click(nameInput);
-      userEvent.click(searchButton);
-    });
+    userEvent.click(nameInput);
+    userEvent.click(searchButton);
 
     expect(global.fetch).toHaveBeenCalled();
 
-    act(() => {
-      userEvent.click(firstLetterInput);
-      userEvent.click(searchButton);
-    });
+    userEvent.click(firstLetterInput);
+    userEvent.click(searchButton);
 
     expect(global.fetch).toHaveBeenCalled();
   });

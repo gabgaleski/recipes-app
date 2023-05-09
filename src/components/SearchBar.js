@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import Context from '../context/Context';
 import {
   ingredientFetchMeal,
@@ -8,27 +9,39 @@ import {
 } from '../services/APIsFetch';
 
 export default function SearchBar() {
-  const { textSearch, titleHeader, setRecipesSearch } = useContext(Context);
+  const {
+    textSearch,
+    titleHeader,
+    recipesSearch,
+    setRecipesSearch } = useContext(Context);
   const [inputSearch, setInputSearch] = useState('');
+  const history = useHistory();
 
   const recipeFilter = async (ingredientAPI, nameAPI, firstLetterAPI) => {
+    let response = null;
     if (inputSearch === 'ingredient') {
-      const ingredients = await ingredientAPI(textSearch);
-      setRecipesSearch(ingredients);
+      response = await ingredientAPI(textSearch);
+      setRecipesSearch(response);
     } else if (inputSearch === 'name') {
-      const names = await nameAPI(textSearch);
-      setRecipesSearch(names);
+      response = await nameAPI(textSearch);
+      setRecipesSearch(response);
     } else if (inputSearch === 'first-letter') {
       if (textSearch.length > 1) {
-        global.alert('Your search must have only 1 (one) character');
-      } else {
-        const firstLetters = await firstLetterAPI(textSearch);
-        setRecipesSearch(firstLetters);
+        return global.alert('Your search must have only 1 (one) character');
       }
+      response = await firstLetterAPI(textSearch);
+      setRecipesSearch(response);
+    }
+    if (titleHeader === 'Meals' && response.meals.length === 1) {
+      const { idMeal } = response.meals[0];
+      history.push(`/meals/${idMeal}`);
+    } else if (titleHeader === 'Drinks' && response.drinks.length === 1) {
+      const { idDrink } = response.drinks[0];
+      history.push(`/drinks/${idDrink}`);
     }
   };
 
-  const handleSubbmit = async () => {
+  const handleSubbmit = () => {
     if (titleHeader === 'Meals') {
       recipeFilter(ingredientFetchMeal, nameFetchMeal, firsLetterFetchMeal);
     } else {
@@ -36,6 +49,7 @@ export default function SearchBar() {
     }
   };
 
+  console.log(recipesSearch);
   return (
     <div>
       <label>
