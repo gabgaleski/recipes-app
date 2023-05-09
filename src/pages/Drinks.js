@@ -1,13 +1,13 @@
 import { useContext, useEffect } from 'react';
-import Header from '../Components/Header';
+import Header from '../components/Header';
 import Context from '../context/Context';
 
-function Favorites() {
+function Drinks() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
 
   useEffect(() => {
-    setTitleHeader('Favorite Recipes');
-    setLoadingSearch(false);
+    setTitleHeader('Drinks');
+    setLoadingSearch(true);
   }, [setTitleHeader, setLoadingSearch]);
 
   return (
@@ -17,4 +17,4 @@ function Favorites() {
   );
 }
 
-export default Favorites;
+export default Drinks;

@@ -3,8 +3,8 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import Provider from '../context/Provider';
-import renderWithRouter from '../Services/RenderWithRouter';
-import Header from '../Components/Header';
+import renderWithRouter from '../services/RenderWithRouter';
+import Header from '../components/Header';
 
 test('Farewell, front-end', () => {
   // Este arquivo pode ser modificado ou deletado sem problemas

@@ -2,10 +2,10 @@ import React from 'react';
 import { screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Provider from '../context/Provider';
-import renderWithRouter from '../Services/RenderWithRouter';
-import SearchBar from '../Components/SearchBar';
+import renderWithRouter from '../services/RenderWithRouter';
+import SearchBar from '../components/SearchBar';
 import App from '../App';
-import { mockMeals } from '../Services/Mocks';
+import { mockMeals } from '../services/Mocks';
 
 describe('', () => {
   beforeEach(() => {

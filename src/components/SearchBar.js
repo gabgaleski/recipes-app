@@ -5,7 +5,7 @@ import {
   nameFetchMeal, firsLetterFetchMeal,
   ingredientFetchDrink,
   nameFetchDrink, firsLetterFetchDrink,
-} from '../Services/APIsFetch';
+} from '../services/APIsFetch';
 
 export default function SearchBar() {
   const { textSearch, titleHeader, setRecipesSearch } = useContext(Context);
