@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import Context from '../context/Context';
 
 function Profile() {
@@ -64,6 +65,7 @@ function Profile() {
       >
         Logout
       </button>
+      <Footer />
     </div>
   );
 }
