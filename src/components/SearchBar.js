@@ -16,21 +16,24 @@ export default function SearchBar() {
     setRecipesSearch } = useContext(Context);
   const [inputSearch, setInputSearch] = useState('');
   const history = useHistory();
+  const maxNumber = 12;
 
   const recipeFilter = async (ingredientAPI, nameAPI, firstLetterAPI) => {
     let response = null;
     if (inputSearch === 'ingredient') {
       response = await ingredientAPI(textSearch);
-      setRecipesSearch(response);
     } else if (inputSearch === 'name') {
       response = await nameAPI(textSearch);
-      setRecipesSearch(response);
     } else if (inputSearch === 'first-letter') {
       if (textSearch.length > 1) {
         return global.alert('Your search must have only 1 (one) character');
       }
       response = await firstLetterAPI(textSearch);
-      setRecipesSearch(response);
+    }
+    if (response[titleHeader.toLowerCase()] !== null) {
+      setRecipesSearch(response[titleHeader.toLowerCase()]);
+    } else {
+      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
     if (titleHeader === 'Meals' && response.meals.length === 1) {
       const { idMeal } = response.meals[0];
@@ -89,6 +92,31 @@ export default function SearchBar() {
       >
         Busca
       </button>
+      {recipesSearch.filter((_element, index) => index < maxNumber)
+        .map((element, index) => {
+          if (titleHeader === 'Drinks') {
+            return (
+              <div data-testid={ `${index}-recipe-card` } key={ index }>
+                <img
+                  data-testid={ `${index}-card-img` }
+                  src={ element.strDrinkThumb }
+                  alt="Imagem da receita"
+                />
+                <h4 data-testid={ `${index}-card-name` }>{element.strDrink}</h4>
+              </div>
+            );
+          }
+          return (
+            <div data-testid={ `${index}-recipe-card` } key={ index }>
+              <img
+                data-testid={ `${index}-card-img` }
+                src={ element.strMealThumb }
+                alt="Imagem da receita"
+              />
+              <h4 data-testid={ `${index}-card-name` }>{element.strMeal}</h4>
+            </div>
+          );
+        })}
     </div>
   );
 }
