@@ -1,6 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import Provider from '../context/Provider';
 import renderWithRouter from '../services/renderWithRouter';
 import SearchBar from '../components/SearchBar';
@@ -32,18 +33,20 @@ describe('', () => {
     expect(firstLetterInput).toBeInTheDocument();
     expect(searchButton).toBeInTheDocument();
   });
-  it('testa se input chama a função no componente drink', async () => {
+  it('testa se input chama a função no componente drink', () => {
     const { history } = renderWithRouter(
       <Provider>
         <App />
       </Provider>,
     );
 
-    history.push('/drinks');
+    act(() => {
+      history.push('/meals');
+    });
 
-    const ingredientInput = await screen.findByLabelText(/Ingredient:/i);
-    const nameInput = await screen.findByLabelText(/name/i);
-    const firstLetterInput = await screen.findByLabelText(/first letter/i);
+    const ingredientInput = screen.getByLabelText(/Ingredient:/i);
+    const nameInput = screen.getByLabelText(/name/i);
+    const firstLetterInput = screen.getByLabelText(/first letter/i);
     const searchButton = screen.getByRole('button', {
       name: 'Busca',
     });
