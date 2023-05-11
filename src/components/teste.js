@@ -105,6 +105,7 @@ const data = [
     strDrinkAlternate: null,
     strCategory: 'Chicken',
     strMealThumb: 'https://www.themealdb.com/images/media/meals/wyxwsp1486979827.jpg',
+    strArea: 'Indian',
   },
 ];
 
