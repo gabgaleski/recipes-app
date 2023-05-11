@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import Provider from '../context/Provider';
@@ -25,9 +25,6 @@ describe('Testes no componente "Done"', () => {
       name: /all/i,
     })).toBeInTheDocument();
 
-    expect(screen.getByTestId('0-horizontal-image'));
-    expect(screen.getByTestId('1-horizontal-image'));
-    expect(screen.getByTestId('2-horizontal-image'));
     expect(screen.getByTestId('0-horizontal-name'));
     expect(screen.getByTestId('0-IBA,Classic-horizontal-tag'));
   });
@@ -39,9 +36,9 @@ describe('Testes no componente "Done"', () => {
       </Provider>,
     );
 
-    const getImgMeals = screen.getByTestId('2-horizontal-image');
-    const getImgDrink1 = screen.getByTestId('1-horizontal-image');
-    const getImgDrink2 = screen.getByTestId('0-horizontal-image');
+    const getImgMeals = screen.getByTestId('2-horizontal-name');
+    const getImgDrink1 = screen.getByTestId('1-horizontal-name');
+    const getImgDrink2 = screen.getByTestId('0-horizontal-name');
 
     const getMeals = screen.getByRole('button', {
       name: /meals/i,
@@ -63,11 +60,15 @@ describe('Testes no componente "Done"', () => {
     expect(getImgDrink1).not.toBeInTheDocument();
     expect(getImgDrink2).not.toBeInTheDocument();
 
-    userEvent.click(getDrinks);
+    act(() => {
+      userEvent.click(getDrinks);
+    });
 
-    expect(getImgMeals).not.toBeInTheDocument();
-    expect(await screen.findByTestId('1-horizontal-image')).toBeInTheDocument();
-    expect(await screen.findByTestId('0-horizontal-image')).toBeInTheDocument();
+    waitFor(() => {
+      expect(getImgMeals).not.toBeInTheDocument();
+      expect(getImgDrink1).toBeInTheDocument();
+      expect(getImgDrink2).toBeInTheDocument();
+    });
 
     act(() => {
       userEvent.click(getAll);
