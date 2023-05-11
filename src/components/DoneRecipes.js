@@ -62,7 +62,7 @@ function DoneRecipes() {
                 <h4 data-testid={ `${index}-horizontal-name` }>{recipe.strDrink}</h4>
               </Link>
               <p data-testid={ `${index}-horizontal-done-date` }>Data da receita feita</p>
-              <button onClick={ () => copyLink(`/drinks/${recipe.idDrink}`) }>
+              <button onClick={ () => copyLink(`http://localhost:3000/drinks/${recipe.idDrink}`) }>
                 <img
                   data-testid={ `${index}-horizontal-share-btn` }
                   src={ shareIcon }
@@ -103,7 +103,7 @@ function DoneRecipes() {
               </h4>
             </Link>
             <p data-testid={ `${index}-horizontal-done-date` }>Data da receita feita</p>
-            <button onClick={ () => copyLink(`/meals/${recipe.idMeal}`) }>
+            <button onClick={ () => copyLink(`http://localhost:3000/meals/${recipe.idMeal}`) }>
               <img
                 data-testid={ `${index}-horizontal-share-btn` }
                 src={ shareIcon }
