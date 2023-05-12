@@ -20,14 +20,14 @@ function RecipeDetails() {
       // setIdDrinks(dataIDD.drinks);
 
       if (location.pathname.includes('/meals')) {
-        const dataIdMeals = await FetchIdMeals('52796');
+        const dataIdMeals = await FetchIdMeals('52846');
         Object.keys(dataIdMeals.meals[0]).forEach((key) => {
           if (
             dataIdMeals.meals[0][key] === null || dataIdMeals.meals[0][key] === '') {
             delete dataIdMeals.meals[0][key];
           }
         });
-        // setIdMeals(Object.entries(dataIdMeals.meals[0]));
+        setIdMeals(Object.entries(dataIdMeals.meals[0]));
       } else if (location.pathname.includes('/drinks')) {
         const dataIdDrinks = await FetchIdDrink('17256');
         Object.keys(dataIdDrinks.drinks[0]).forEach((key) => {
@@ -40,14 +40,15 @@ function RecipeDetails() {
       }
     };
     handleChange();
-  }, [idMeals, location.pathname]);
+  }, [location.pathname]);
   return (
     <div>
-      {idDrinks.map((element, index) => {
+      {idDrinks.length > 0 ? idDrinks.map((element, index) => {
+        console.log(element[0]);
         if (element[0].includes('Ingredient')) {
           return (
             <li
-              key={ element[1] }
+              key={ element[0] }
               data-testid={ `${index}-ingredient-name-and-measure` }
             >
               {element[1]}
@@ -56,7 +57,7 @@ function RecipeDetails() {
         }
         switch (element[0]) {
         case 'strDrink':
-          return <title data-testid="recipe-title">{element[1]}</title>;
+          return <h1 data-testid="recipe-title">{element[1]}</h1>;
         case 'strDrinkThumb':
           return (<img
             src={ element[1] }
@@ -67,39 +68,50 @@ function RecipeDetails() {
           return <h3 data-testid="recipe-category">{element[1]}</h3>;
         case 'strInstructions':
           return <li data-testid="instructions">{element[1]}</li>;
-        default:
+        default: return null;
         }
-        return console.log('Deu bom!');
-      })}
+      })
 
-      {idMeals.map((element, index) => {
-        if (element[0].includes('Ingredient')) {
-          return (
-            <li
-              key={ element[1] }
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {element[1]}
-            </li>
-          );
-        }
-        switch (element[0]) {
-        case 'strMeal':
-          return <title data-testid="recipe-title">{element[1]}</title>;
-        case 'strMealThumb':
-          return (<img
-            src={ element[1] }
-            alt="Imagem da receita"
-            data-testid="recipe-photo"
-          />);
-        case 'strCategory':
-          return <h3 data-testid="recipe-category">{element[1]}</h3>;
-        case 'strInstructions':
-          return <li data-testid="instructions">{element[1]}</li>;
-        default:
-        }
-        return console.log('DEU BOM DE NOVO');
-      })}
+        : idMeals.map((element, index) => {
+          console.log(element[0]);
+          if (element[0].includes('Ingredient')) {
+            return (
+              <li
+                key={ element[0] }
+                data-testid={ `${index}-ingredient-name-and-measure` }
+              >
+                {element[1]}
+              </li>
+
+            );
+          }
+          switch (element[0]) {
+          case 'strMeal':
+            return <h1 data-testid="recipe-title">{element[1]}</h1>;
+          case 'strMealThumb':
+            return (<img
+              src={ element[1] }
+              alt="Imagem da receita"
+              data-testid="recipe-photo"
+            />);
+          case 'strCategory':
+            return <h3 data-testid="recipe-category">{element[1]}</h3>;
+          case 'strInstructions':
+            return <li data-testid="instructions">{element[1]}</li>;
+          case 'strYoutube':
+            console.log(element[1]);
+            return (
+              <iframe
+                data-testid="video"
+                width="420"
+                height="315"
+                src={ element[1] }
+                title="video"
+              />
+            );
+          default: return null;
+          }
+        })}
     </div>
   );
 }
