@@ -1,6 +1,8 @@
 import { useContext, useEffect } from 'react';
 import Header from '../components/Header';
 import Context from '../context/Context';
+import shareIcon from '../images/shareIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function FavoritesRecipes() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
@@ -54,34 +56,85 @@ function FavoritesRecipes() {
           </button>
         </fieldset>
         <div>
-          {mockRecipes.map((recipe, index) => (
-            <div key={ index }>
-              <p>{recipe.type}</p>
-              <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
-              <p data-testid={ `${index}-horizontal-top-text` }>{recipe.category}</p>
-              <p
-                data-testid={ `${index}-horizontal-top-text` }
-              >
-                {recipe.alcoholicOrNot}
+          {
+            mockRecipes.map((recipe, index) => {
+              if (recipe.type === 'meal') {
+                return (
+                  <div key={ index }>
+                    <p>{recipe.type}</p>
+                    <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
+                    <p data-testid={ `${index}-horizontal-top-text` }>
+                      {`${recipe.nationality} - ${recipe.category}`}
+                    </p>
+                    <p
+                      data-testid={ `${index}-horizontal-top-text` }
+                    >
+                      {recipe.alcoholicOrNot}
 
-              </p>
-              <img
-                data-testid={ `${index}-horizontal-image` }
-                src={ recipe.image }
-                alt={ recipe.name }
-              />
-              <button
-                data-testid={ `${index}-horizontal-share-btn` }
-              >
-                Share
-              </button>
-              <button
-                data-testid={ `${index}-horizontal-favorite-btn` }
-              >
-                Favorite
-              </button>
-            </div>
-          ))}
+                    </p>
+                    <img
+                      data-testid={ `${index}-horizontal-image` }
+                      src={ recipe.image }
+                      alt={ recipe.name }
+                    />
+                    <button
+                      type="button"
+                      data-testid={ `${index}-horizontal-share-btn` }
+                    >
+                      <img
+                        src={ shareIcon }
+                        alt="Share Icon"
+                      />
+                    </button>
+                    <button
+                      type="button"
+                      data-testid={ `${index}-horizontal-favorite-btn` }
+                    >
+                      <img
+                        src={ blackHeartIcon }
+                        alt="Favorite Icon"
+                      />
+                    </button>
+                </div>);
+              } if (recipe.type === 'drink') {
+                return (
+                  <div key={ index }>
+                    <p>{recipe.type}</p>
+                    <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
+                    <p data-testid={ `${index}-horizontal-top-text` }>
+                      {`${recipe.alcoholicOrNot} - ${recipe.category}`}
+                    </p>
+                    <p
+                      data-testid={ `${index}-horizontal-top-text` }
+                    >
+                      {recipe.alcoholicOrNot}
+
+                    </p>
+                    <img
+                      data-testid={ `${index}-horizontal-image` }
+                      src={ recipe.image }
+                      alt={ recipe.name }
+                    />
+                    <button
+                      type="button"
+                      src={ shareIcon }
+                      data-testid={ `${index}-horizontal-share-btn` }
+                    >
+                      Share
+                    </button>
+                    <button
+                      type="button"
+                      src={ blackHeartIcon }
+                      data-testid={ `${index}-horizontal-favorite-btn` }
+                    >
+                      Favorite
+                    </button>
+                  </div>
+                );
+              }
+              return null;
+            })
+          }
         </div>
       </form>
     </div>
