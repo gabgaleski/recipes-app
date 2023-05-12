@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-// import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { FetchIdDrink, FetchIdMeals } from '../services/APIsFetch';
-import data from './data';
+// import data from './data';
 
 function RecipeDetails() {
   const [idDrinks, setIdDrinks] = useState([]);
@@ -10,218 +10,96 @@ function RecipeDetails() {
   //   console.log(location.pathname); // Exibe o caminho atual
   //   console.log(location.search);
 
-  function removerValoresNullEVazios() {
-    Object.keys(idDrinks[0]).forEach((key) => {
-      if (idDrinks[0][key] === null || idDrinks[0][key] === '') {
-        delete idDrinks[key];
-      }
-      console.log(idDrinks);
-    });
-  }
+  const location = useLocation();
 
   useEffect(() => {
     const handleChange = async () => {
-      const dataIdM = await FetchIdMeals('52796');
-      const dataIDD = await FetchIdDrink('17256');
-      setIdMeals(dataIdM.meals);
-      setIdDrinks(dataIDD.drinks);
-      // if (location.pathname === '/meals') {
-      //   const dataIdMeals = await FetchIdMeals(location.pathname.id);
-      //   setIdMeals(dataIdMeals);
-      // } else if (location.pathname === '/drinks') {
-      //   const dataIdDrinks = await FetchIdDrink(location.pathname.id);
-      //   setIdDrinks(dataIdDrinks);
-      // }
+      // const dataIdM = await FetchIdMeals('52796');
+      // const dataIDD = await FetchIdDrink('17256');
+      // setIdMeals(dataIdM.meals);
+      // setIdDrinks(dataIDD.drinks);
+
+      if (location.pathname.includes('/meals')) {
+        const dataIdMeals = await FetchIdMeals('52796');
+        Object.keys(dataIdMeals.meals[0]).forEach((key) => {
+          if (
+            dataIdMeals.meals[0][key] === null || dataIdMeals.meals[0][key] === '') {
+            delete dataIdMeals.meals[0][key];
+          }
+        });
+        // setIdMeals(Object.entries(dataIdMeals.meals[0]));
+      } else if (location.pathname.includes('/drinks')) {
+        const dataIdDrinks = await FetchIdDrink('17256');
+        Object.keys(dataIdDrinks.drinks[0]).forEach((key) => {
+          if (
+            dataIdDrinks.drinks[0][key] === null || dataIdDrinks.drinks[0][key] === '') {
+            delete dataIdDrinks.drinks[0][key];
+          }
+        });
+        setIdDrinks(Object.entries(dataIdDrinks.drinks[0]));
+      }
     };
     handleChange();
-  }, []);
-  console.log(idDrinks);
+  }, [idMeals, location.pathname]);
   return (
     <div>
-      {idDrinks.length > 0 ? idDrinks.map((drinkOrMeal, index) => (
-        <>
-          <title
-            data-testid="recipe-title"
-            key={ drinkOrMeal.idDrink }
-          >
-            {drinkOrMeal.strDrink}
-
-          </title>
-          <img
+      {idDrinks.map((element, index) => {
+        if (element[0].includes('Ingredient')) {
+          return (
+            <li
+              key={ element[1] }
+              data-testid={ `${index}-ingredient-name-and-measure` }
+            >
+              {element[1]}
+            </li>
+          );
+        }
+        switch (element[0]) {
+        case 'strDrink':
+          return <title data-testid="recipe-title">{element[1]}</title>;
+        case 'strDrinkThumb':
+          return (<img
+            src={ element[1] }
+            alt="Imagem da receita"
             data-testid="recipe-photo"
-            src={ drinkOrMeal.strMealThumb }
-            alt={ drinkOrMeal.strDrink }
-          />
-          <h4 data-testid="recipe-category">{drinkOrMeal.strCategory}</h4>
-          <ol>
+          />);
+        case 'strCategory':
+          return <h3 data-testid="recipe-category">{element[1]}</h3>;
+        case 'strInstructions':
+          return <li data-testid="instructions">{element[1]}</li>;
+        default:
+        }
+        return console.log('Deu bom!');
+      })}
+
+      {idMeals.map((element, index) => {
+        if (element[0].includes('Ingredient')) {
+          return (
             <li
+              key={ element[1] }
               data-testid={ `${index}-ingredient-name-and-measure` }
             >
-              {`${drinkOrMeal.strIngredient1} `}
-
+              {element[1]}
             </li>
-            <li
-              data-testid={ `${index + 1}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient2}
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient3}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient4}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient5}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient6}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient7}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient8}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient9}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient10}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient11}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient12}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient13}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient14}
-
-            </li>
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {drinkOrMeal.strIngredient15}
-
-            </li>
-          </ol>
-          <h4>instructions:</h4>
-          <p data-testid="instructions">{drinkOrMeal.strInstructions}</p>
-        </>
-      )) : idMeals.map((meal) => (
-        <>
-          <title
-            data-testid="recipe-title"
-            key={ meal.idMeal }
-          >
-            {meal.strMeal}
-
-          </title>
-          <img
+          );
+        }
+        switch (element[0]) {
+        case 'strMeal':
+          return <title data-testid="recipe-title">{element[1]}</title>;
+        case 'strMealThumb':
+          return (<img
+            src={ element[1] }
+            alt="Imagem da receita"
             data-testid="recipe-photo"
-            src={ meal.strMealThumb }
-            alt={ meal.strMeal }
-          />
-          <h4 data-testid="recipe-category">{meal.strCategory}</h4>
-          <ol>
-            <li
-              data-testid="1-ingredient-name-and-measure"
-            >
-              {meal.strIngredient1}
-
-            </li>
-            <li
-              data-testid="2-ingredient-name-and-measure"
-            >
-              {meal.strIngredient2}
-            </li>
-            <li
-              data-testid="3-ingredient-name-and-measure"
-            >
-              {meal.strIngredient3}
-
-            </li>
-            <li
-              data-testid="$4-ingredient-name-and-measure"
-            >
-              {drinkOrMeal.strIngredient4}
-
-            </li>
-            <li
-              data-testid="5-ingredient-name-and-measure"
-            >
-              {drinkOrMeal.strIngredient5}
-
-            </li>
-            <li
-              data-testid="6-ingredient-name-and-measure"
-            >
-              {drinkOrMeal.strIngredient6}
-
-            </li>
-            <li
-              data-testid="7-ingredient-name-and-measure"
-            >
-              {drinkOrMeal.strIngredient7}
-
-            </li>
-            <li
-              data-testid="8-ingredient-name-and-measure"
-            >
-              {drinkOrMeal.strIngredient8}
-
-            </li>
-            <li
-              data-testid="9-ingredient-name-and-measure"
-            >
-              {drinkOrMeal.strIngredient9}
-
-            </li>
-          </ol>
-          <h4>instructions:</h4>
-          <p data-testid="instructions">{drinkOrMeal.strInstructions}</p>
-        </>
-      ))}
-      <button onClick={ removerValoresNullEVazios }>Click</button>
+          />);
+        case 'strCategory':
+          return <h3 data-testid="recipe-category">{element[1]}</h3>;
+        case 'strInstructions':
+          return <li data-testid="instructions">{element[1]}</li>;
+        default:
+        }
+        return console.log('DEU BOM DE NOVO');
+      })}
     </div>
   );
 }
