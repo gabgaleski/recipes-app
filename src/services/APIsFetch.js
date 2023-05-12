@@ -45,3 +45,15 @@ export const FetchIdMeals = async (id) => {
   const data = await response.json();
   return data;
 };
+
+export const FetchRecommendationMeals = async () => {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+  const data = await response.json();
+  return data;
+};
+
+export const FetchRecommendationDrinks = async () => {
+  const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+  const data = await response.json();
+  return data;
+};
