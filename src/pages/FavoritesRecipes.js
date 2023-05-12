@@ -1,4 +1,5 @@
-import { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import clipboardCopy from 'clipboard-copy';
 import Header from '../components/Header';
 import Context from '../context/Context';
 import shareIcon from '../images/shareIcon.svg';
@@ -6,6 +7,7 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function FavoritesRecipes() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
+  const [alert, setAlert] = useState(false);
 
   const mockRecipes = [{
     id: '52940',
@@ -18,7 +20,7 @@ function FavoritesRecipes() {
   },
   {
     id: '52940',
-    type: 'meal',
+    type: 'drink',
     nationality: 'italian',
     category: 'Vegetarian',
     alcoholicOrNot: 'Alcoholic',
@@ -30,6 +32,15 @@ function FavoritesRecipes() {
     setTitleHeader('Favorite Recipes');
     setLoadingSearch(false);
   }, [setTitleHeader, setLoadingSearch]);
+
+  const handleShareBtn = (element) => {
+    clipboardCopy(`http://localhost:3000${element}`);
+    setAlert(true);
+    const duration = 3000;
+    setTimeout(() => {
+      setAlert(false);
+    }, duration);
+  };
 
   return (
     <div>
@@ -80,6 +91,10 @@ function FavoritesRecipes() {
                     <button
                       type="button"
                       data-testid={ `${index}-horizontal-share-btn` }
+                      onClick={ () => handleShareBtn(
+                        recipe.type === 'meal'
+                          ? `/meals/${recipe.id}` : `/drinks/${recipe.id}`,
+                      ) }
                     >
                       <img
                         src={ shareIcon }
@@ -95,7 +110,8 @@ function FavoritesRecipes() {
                         alt="Favorite Icon"
                       />
                     </button>
-                </div>);
+                  </div>
+                );
               } if (recipe.type === 'drink') {
                 return (
                   <div key={ index }>
@@ -117,17 +133,25 @@ function FavoritesRecipes() {
                     />
                     <button
                       type="button"
-                      src={ shareIcon }
                       data-testid={ `${index}-horizontal-share-btn` }
+                      onClick={ () => handleShareBtn(
+                        recipe.type === 'meal'
+                          ? `/meals/${recipe.id}` : `/drinks/${recipe.id}`,
+                      ) }
                     >
-                      Share
+                      <img
+                        src={ shareIcon }
+                        alt="Share Icon"
+                      />
                     </button>
                     <button
                       type="button"
-                      src={ blackHeartIcon }
                       data-testid={ `${index}-horizontal-favorite-btn` }
                     >
-                      Favorite
+                      <img
+                        src={ blackHeartIcon }
+                        alt="Favorite Icon"
+                      />
                     </button>
                   </div>
                 );
@@ -137,6 +161,7 @@ function FavoritesRecipes() {
           }
         </div>
       </form>
+      {alert && <p>Link copiado!</p>}
     </div>
   );
 }
