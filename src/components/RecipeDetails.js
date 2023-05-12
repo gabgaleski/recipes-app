@@ -23,7 +23,7 @@ function RecipeDetails() {
 
       if (location.pathname.includes('/meals')) {
         const recommendationDrink = await FetchRecommendationDrinks();
-        setRecommendationDrinks(recommendationDrink);
+        setRecommendationDrinks(recommendationDrink.drinks);
         const dataIdMeals = await FetchIdMeals('52846');
         Object.keys(dataIdMeals.meals[0]).forEach((key) => {
           if (
@@ -34,7 +34,7 @@ function RecipeDetails() {
         setIdMeals(Object.entries(dataIdMeals.meals[0]));
       } else if (location.pathname.includes('/drinks')) {
         const recommendationMeal = await FetchRecommendationMeals();
-        setRecommendationMeals(recommendationMeal);
+        setRecommendationMeals(recommendationMeal.meals);
         const dataIdDrinks = await FetchIdDrink('17256');
         Object.keys(dataIdDrinks.drinks[0]).forEach((key) => {
           if (
@@ -50,7 +50,6 @@ function RecipeDetails() {
   return (
     <div>
       {idDrinks.length > 0 ? idDrinks.map((element, index) => {
-        console.log(element[0]);
         if (element[0].includes('Ingredient')) {
           return (
             <li
@@ -79,7 +78,6 @@ function RecipeDetails() {
       })
 
         : idMeals.map((element, index) => {
-          console.log(element[0]);
           if (element[0].includes('Ingredient')) {
             return (
               <li
@@ -105,7 +103,6 @@ function RecipeDetails() {
           case 'strInstructions':
             return <li data-testid="instructions">{element[1]}</li>;
           case 'strYoutube':
-            console.log(element[1]);
             return (
               <iframe
                 data-testid="video"
@@ -118,6 +115,9 @@ function RecipeDetails() {
           default: return null;
           }
         })}
+      <button data-testid="start-recipe-btn" className="buttonStart">
+        Start Recipe
+      </button>
     </div>
   );
 }
