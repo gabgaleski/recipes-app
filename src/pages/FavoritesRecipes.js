@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import clipboardCopy from 'clipboard-copy';
 import Header from '../components/Header';
 import Context from '../context/Context';
 import shareIcon from '../images/shareIcon.svg';
@@ -69,12 +68,13 @@ function FavoritesRecipes() {
   };
 
   const handleShareBtn = (element) => {
-    clipboardCopy(`http://localhost:3000${element}`);
+    navigator.clipboard.writeText(`http://localhost:3000${element}`);
     setAlert(true);
     const duration = 3000;
     setTimeout(() => {
       setAlert(false);
     }, duration);
+    global.alert('Link copiado!');
   };
 
   console.log(favoriteRecipes);

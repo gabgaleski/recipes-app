@@ -1,7 +1,5 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 import Provider from '../context/Provider';
 import renderWithRouter from '../services/renderWithRouter';
 import FavoritesRecipes from '../pages/FavoritesRecipes';
