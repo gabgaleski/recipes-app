@@ -1,40 +1,41 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
-import data from './teste';
 
 function DoneRecipes() {
   const [recipesDone, setRecipesDone] = useState([]);
   const [renderRecipes, setRenderRecipes] = useState([]);
+  const [copied, setCopied] = useState(false);
 
   const filterRecipes = (type) => {
-    const newArray = recipesDone.filter((element) => element[`id${type}`]);
+    const newArray = recipesDone.filter((element) => element.type === type);
     setRenderRecipes(newArray);
+    setCopied(false);
   };
 
   useEffect(() => {
-    // const recipes = localStorage.getItem('doneRecipes');
-    setRecipesDone(data);
-    setRenderRecipes(data);
+    const recipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    setRecipesDone(recipes);
+    setRenderRecipes(recipes);
   }, [setRecipesDone]);
 
   const copyLink = (link) => {
     navigator.clipboard.writeText(link);
-    global.alert('Link copied!');
+    setCopied(true);
   };
 
   return (
     <div>
       <button
         data-testid="filter-by-meal-btn"
-        onClick={ () => filterRecipes('Meal') }
+        onClick={ () => filterRecipes('meal') }
       >
         Meals
 
       </button>
       <button
         data-testid="filter-by-drink-btn"
-        onClick={ () => filterRecipes('Drink') }
+        onClick={ () => filterRecipes('drink') }
       >
         Drinks
 
@@ -47,63 +48,79 @@ function DoneRecipes() {
 
       </button>
       {renderRecipes.map((recipe, index) => {
-        if (recipe.idDrink) {
+        if (recipe.type === 'drink') {
           return (
-            <div key={ recipe.idDrink }>
-              <Link to={ `/drinks/${recipe.idDrink}` }>
+            <div key={ recipe.id }>
+              <Link to={ `/drinks/${recipe.id}` }>
                 <img
+                  className="image-recipe"
                   data-testid={ `${index}-horizontal-image` }
-                  src={ recipe.strDrinkThumb }
+                  src={ recipe.image }
                   alt="Imagem da Receita"
                 />
               </Link>
-              <p data-testid={ `${index}-horizontal-top-text` }>{recipe.strCategory}</p>
-              <Link to={ `/drinks/${recipe.idDrink}` }>
-                <h4 data-testid={ `${index}-horizontal-name` }>{recipe.strDrink}</h4>
+              <p data-testid={ `${index}-horizontal-top-text` }>{recipe.category}</p>
+              <Link to={ `/drinks/${recipe.id}` }>
+                <h4 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h4>
               </Link>
-              <p data-testid={ `${index}-horizontal-done-date` }>Data da receita feita</p>
-              <button onClick={ () => copyLink(`http://localhost:3000/drinks/${recipe.idDrink}`) }>
+              <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
+              <button onClick={ () => copyLink(`http://localhost:3000/drinks/${recipe.id}`) }>
                 <img
                   data-testid={ `${index}-horizontal-share-btn` }
                   src={ shareIcon }
                   alt="Compartilhar receita"
                 />
-
               </button>
+
               <p
-                data-testid={ `${index}-${recipe.strTags}-horizontal-tag ` }
+                data-testid={ `${index}-${recipe.tags[0]}-horizontal-tag` }
               >
-                {recipe.strTags}
+                {recipe.tags[0]}
+
               </p>
-              <p data-testid={ `${index}-horizontal-top-text` }>{recipe.strAlcoholic}</p>
+              <p
+                data-testid={ `${index}-${recipe.tags[1]}-horizontal-tag` }
+              >
+                {recipe.tags[1]}
+
+              </p>
+
+              <p
+                data-testid={ `${index}-horizontal-top-text` }
+              >
+                {recipe.alcoholicOrNot}
+
+              </p>
             </div>
           );
         }
+
         return (
-          <div key={ recipe.idMeal }>
-            <Link to={ `/meals/${recipe.idMeal}` }>
+          <div key={ recipe.id }>
+            <Link to={ `/meals/${recipe.id}` }>
               <img
+                className="image-recipe"
                 data-testid={ `${index}-horizontal-image` }
-                src={ recipe.strMealThumb }
+                src={ recipe.image }
                 alt="Imagem da Receita"
               />
             </Link>
             <p
               data-testid={ `${index}-horizontal-top-text` }
             >
-              {`${recipe.strArea} - ${recipe.strCategory}`}
+              {`${recipe.nationality} - ${recipe.category}`}
 
             </p>
-            <Link to={ `/meals/${recipe.idMeal}` }>
+            <Link to={ `/meals/${recipe.id}` }>
               <h4
                 data-testid={ `${index}-horizontal-name` }
               >
-                {recipe.strMeal}
+                {recipe.name}
 
               </h4>
             </Link>
-            <p data-testid={ `${index}-horizontal-done-date` }>Data da receita feita</p>
-            <button onClick={ () => copyLink(`http://localhost:3000/meals/${recipe.idMeal}`) }>
+            <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
+            <button onClick={ () => copyLink(`http://localhost:3000/meals/${recipe.id}`) }>
               <img
                 data-testid={ `${index}-horizontal-share-btn` }
                 src={ shareIcon }
@@ -111,14 +128,24 @@ function DoneRecipes() {
               />
 
             </button>
+
             <p
-              data-testid={ `${index}-${recipe.strTags}-horizontal-tag ` }
+              data-testid={ `${index}-${recipe.tags[0]}-horizontal-tag` }
             >
-              {recipe.strTags}
+              {recipe.tags[0]}
+
             </p>
+            <p
+              data-testid={ `${index}-${recipe.tags[1]}-horizontal-tag` }
+            >
+              {recipe.tags[1]}
+
+            </p>
+
           </div>
         );
       })}
+      {copied && <p>Link copied!</p>}
     </div>
   );
 }

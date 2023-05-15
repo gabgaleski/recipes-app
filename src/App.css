@@ -71,3 +71,9 @@ footer {
   bottom: 0;
   position: fixed;
 }
+
+
+.image-recipe {
+  height: 100px;
+  width: 100px;
+}
