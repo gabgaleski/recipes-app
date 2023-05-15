@@ -76,3 +76,20 @@ footer {
   bottom: 0;
   position: fixed;
 }
+.carousel {
+  display: flex;
+  width: 25%;
+  height: 30vh;
+  overflow-x: scroll;
+  overflow-y:hidden;
+  white-space: nowrap;
+  gap: 10px;
+}
+.displayCard {
+  width: 50%;
+  height: 100%;
+
+}
+.recommendationImage {
+  height: 50%;
+}

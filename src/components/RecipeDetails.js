@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { FetchIdDrink, FetchIdMeals, FetchRecommendationDrinks, FetchRecommendationMeals } from '../services/APIsFetch';
+import { FetchIdDrink, FetchIdMeals, FetchRecommendationDrinks, FetchRecommendationMeals }
+  from '../services/APIsFetch';
 // import data from './data';
 
 function RecipeDetails() {
@@ -24,7 +25,8 @@ function RecipeDetails() {
       if (location.pathname.includes('/meals')) {
         const recommendationDrink = await FetchRecommendationDrinks();
         setRecommendationDrinks(recommendationDrink.drinks);
-        const dataIdMeals = await FetchIdMeals('52846');
+        const dataIdMeals = await FetchIdMeals((location.pathname.match(/\d+/g))[0]);
+        console.log(dataIdMeals);
         Object.keys(dataIdMeals.meals[0]).forEach((key) => {
           if (
             dataIdMeals.meals[0][key] === null || dataIdMeals.meals[0][key] === '') {
@@ -35,7 +37,7 @@ function RecipeDetails() {
       } else if (location.pathname.includes('/drinks')) {
         const recommendationMeal = await FetchRecommendationMeals();
         setRecommendationMeals(recommendationMeal.meals);
-        const dataIdDrinks = await FetchIdDrink('17256');
+        const dataIdDrinks = await FetchIdDrink(location.pathname.match(/\d+/g)[0]);
         Object.keys(dataIdDrinks.drinks[0]).forEach((key) => {
           if (
             dataIdDrinks.drinks[0][key] === null || dataIdDrinks.drinks[0][key] === '') {
@@ -47,6 +49,9 @@ function RecipeDetails() {
     };
     handleChange();
   }, [location.pathname]);
+  console.log(recommendationMeals);
+  console.log(recommendationDrinks);
+  const magicNumberSix = 6;
   return (
     <div>
       {idDrinks.length > 0 ? idDrinks.map((element, index) => {
@@ -115,6 +120,55 @@ function RecipeDetails() {
           default: return null;
           }
         })}
+      <div className="carousel">
+        {
+
+          recommendationMeals.slice(0, magicNumberSix).map((recommendation, index) => (
+
+            <div
+              className="displayCard"
+              data-testid={ `${index}-recommendation-card` }
+              key={ recommendation.idMeals }
+            >
+              <h2 data-testid={ `${index}-recommendation-title` }>
+                {recommendation.strMeal}
+
+              </h2>
+              <img
+                src={ recommendation.strMealThumb }
+                alt={ recommendation.strArea }
+                className="recommendationImage"
+              />
+            </div>
+
+          ))
+        }
+      </div>
+      <div className="carousel">
+        {
+          recommendationDrinks.slice(0, magicNumberSix).map((recommendation, index) => (
+
+            <div
+              key={ recommendation.idDrink }
+              className="displayCard"
+              data-testid={ `${index}-recommendation-card` }
+            >
+
+              <h2 data-testid={ `${index}-recommendation-title` }>
+                {recommendation.strDrink}
+
+              </h2>
+              <img
+                src={ recommendation.strDrinkThumb }
+                alt={ recommendation.strArea }
+                className="recommendationImage"
+              />
+
+            </div>
+
+          ))
+        }
+      </div>
       <button data-testid="start-recipe-btn" className="buttonStart">
         Start Recipe
       </button>
