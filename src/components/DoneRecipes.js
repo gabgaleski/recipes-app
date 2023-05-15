@@ -48,7 +48,7 @@ function DoneRecipes() {
         All
 
       </button>
-      {renderRecipes.map((recipe, index) => {
+      {renderRecipes && renderRecipes.map((recipe, index) => {
         if (recipe.type === 'drink') {
           return (
             <div key={ recipe.id }>
