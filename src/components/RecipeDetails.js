@@ -26,7 +26,6 @@ function RecipeDetails() {
         const recommendationDrink = await FetchRecommendationDrinks();
         setRecommendationDrinks(recommendationDrink.drinks);
         const dataIdMeals = await FetchIdMeals((location.pathname.match(/\d+/g))[0]);
-        console.log(dataIdMeals);
         Object.keys(dataIdMeals.meals[0]).forEach((key) => {
           if (
             dataIdMeals.meals[0][key] === null || dataIdMeals.meals[0][key] === '') {
@@ -49,38 +48,40 @@ function RecipeDetails() {
     };
     handleChange();
   }, [location.pathname]);
-  console.log(recommendationMeals);
-  console.log(recommendationDrinks);
+  const measurements = idDrinks.filter((measure) => measure[0].includes('Measure'));
+  const ingredients = idDrinks.filter((ingredint) => ingredint[0].includes('Ingredient'));
+
+  const measurementsMeals = idMeals.filter((measure) => measure[0].includes('Measure'));
+  const ingredientsMeasl = idMeals
+    .filter((ingredint) => ingredint[0].includes('Ingredient'));
+  console.log(ingredientsMeasl);
+
   const magicNumberSix = 6;
   return (
     <div>
-      {idDrinks.length > 0 ? idDrinks.map((element, index) => {
-        if (element[0].includes('Ingredient')) {
-          return (
-            <li
-              key={ element[0] }
-              data-testid={ `${index}-ingredient-name-and-measure` }
-            >
-              {element[1]}
-            </li>
-          );
-        }
-        switch (element[0]) {
-        case 'strDrink':
-          return <h1 data-testid="recipe-title">{element[1]}</h1>;
-        case 'strDrinkThumb':
-          return (<img
-            src={ element[1] }
-            alt="Imagem da receita"
-            data-testid="recipe-photo"
-          />);
-        case 'strCategory':
-          return <h3 data-testid="recipe-category">{element[1]}</h3>;
-        case 'strInstructions':
-          return <li data-testid="instructions">{element[1]}</li>;
-        default: return null;
-        }
-      })
+      {idDrinks.length > 0 ? idDrinks.map(
+        (element) => {
+          switch (element[0]) {
+          case 'strDrink':
+            return <h1 data-testid="recipe-title">{element[1]}</h1>;
+          case 'strDrinkThumb':
+            return (<img
+              src={ element[1] }
+              alt="Imagem da receita"
+              data-testid="recipe-photo"
+              className="recipePhoto"
+            />);
+          case 'strCategory':
+            return <h3 data-testid="recipe-category">{element[1]}</h3>;
+          case 'strAlcoholic':
+            return <h3 data-testid="recipe-category">{element[1]}</h3>;
+          case 'strInstructions':
+            return <li data-testid="instructions">{element[1]}</li>;
+          default: return null;
+          }
+        },
+
+      )
 
         : idMeals.map((element, index) => {
           if (element[0].includes('Ingredient')) {
@@ -102,6 +103,7 @@ function RecipeDetails() {
               src={ element[1] }
               alt="Imagem da receita"
               data-testid="recipe-photo"
+              className="recipePhoto"
             />);
           case 'strCategory':
             return <h3 data-testid="recipe-category">{element[1]}</h3>;
@@ -120,6 +122,31 @@ function RecipeDetails() {
           default: return null;
           }
         })}
+      <div>
+
+        {ingredients.map((ingredient, index) => (
+          <li
+            key={ ingredient[0] }
+            data-testid={ `${index}-ingredient-name-and-measure` }
+          >
+            {`${ingredient[1]} : ${measurements[index][1]}`}
+          </li>
+        ))}
+        ;
+
+      </div>
+      <div>
+
+        {ingredientsMeasl.map((ingredient, index) => (
+          <li
+            key={ ingredient[0] }
+            data-testid={ `${index}-ingredient-name-and-measure` }
+          >
+            {`${ingredient[1]}: ${measurementsMeals[index][1]}`}
+          </li>
+        ))}
+        ;
+      </div>
       <div className="carousel">
         {
 
