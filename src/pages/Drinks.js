@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Context from '../context/Context';
+import Recipes from '../components/Recipes';
 
 function Drinks() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
@@ -14,6 +15,7 @@ function Drinks() {
   return (
     <div>
       <Header />
+      <Recipes />
       <Footer />
     </div>
   );
