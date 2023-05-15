@@ -61,6 +61,13 @@ function FavoritesRecipes() {
     }
   };
 
+  const handleRemoveFavorite = (index) => {
+    const spliceFavorite = [...favoriteRecipes].toSpliced(index, 1);
+    setFavoriteRecipes(spliceFavorite);
+    localStorage.removeItem('favoriteRecipes');
+    localStorage.setItem('favoriteRecipes', JSON.stringify(spliceFavorite));
+  };
+
   const handleShareBtn = (element) => {
     clipboardCopy(`http://localhost:3000${element}`);
     setAlert(true);
@@ -70,6 +77,7 @@ function FavoritesRecipes() {
     }, duration);
   };
 
+  console.log(favoriteRecipes);
   return (
     <div>
       <Header />
@@ -134,6 +142,7 @@ function FavoritesRecipes() {
                 <button
                   type="button"
                   data-testid={ `${index}-horizontal-favorite-btn` }
+                  onClick={ () => handleRemoveFavorite(index) }
                 >
                   <img
                     src={ blackHeartIcon }
