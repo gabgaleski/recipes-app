@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FetchIdDrink, FetchIdMeals, allMeals, allDrinks }
   from '../services/APIsFetch';
-// import data from './data';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 function RecipeDetails() {
   const [idDrinks, setIdDrinks] = useState([]);
@@ -200,6 +201,12 @@ function RecipeDetails() {
         onClick={ handleRedirect }
       >
         Start Recipe
+      </button>
+      <button data-testid="share-btn">
+        <img src={ shareIcon } alt="Botao de Compartilhar" />
+      </button>
+      <button data-testid="favorite-btn">
+        <img src={ whiteHeartIcon } alt="Botao de Favoritar" />
       </button>
     </div>
   );
