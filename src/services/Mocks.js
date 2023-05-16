@@ -28,3 +28,14 @@ export const mockFavRecipe = [
     image: 'https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg',
   },
 ];
+
+export const handleShareBtn = (element) => {
+  navigator.clipboard.writeText(`http://localhost:3000${element}`);
+  setAlert(true);
+  const duration = 3000;
+  setTimeout(() => {
+    setAlert(false);
+  }, duration);
+  global.alert('Link copied!');
+};
+

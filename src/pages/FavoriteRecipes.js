@@ -4,33 +4,36 @@ import Header from '../components/Header';
 import Context from '../context/Context';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import '../styles/FavoritesRecipes.css';
 
-function FavoritesRecipes() {
+function FavoriteRecipes() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
   const [alert, setAlert] = useState(false);
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [recipeFilter, setRecipeFilter] = useState('All');
 
   const mockRecipes = [{
-    id: '52940',
+    id: '52771',
     type: 'meal',
-    nationality: 'italian',
+    nationality: 'Italian',
     category: 'Vegetarian',
     alcoholicOrNot: 'Alcoholic',
-    name: 'Vegan Chocolate Cake',
+    name: 'Spicy Arrabiata Penne',
     image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
   },
   {
-    id: '52940',
+    id: '178319',
     type: 'drink',
-    nationality: 'italian',
+    nationality: 'Italian',
     category: 'Vegetarian',
     alcoholicOrNot: 'Alcoholic',
-    name: 'Vegan Chocolate Cake',
+    name: 'Aquamarine',
     image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
   }];
 
-  localStorage.setItem('favoriteRecipes', JSON.stringify(mockRecipes));
+  useEffect(() => {
+    localStorage.setItem('favoriteRecipes', JSON.stringify(mockRecipes));
+  }, []);
 
   const getFavoriteRecipes = useCallback(() => {
     const favoriteRecipesStorage = JSON.parse(localStorage.getItem('favoriteRecipes'));
@@ -63,7 +66,6 @@ function FavoritesRecipes() {
   const handleRemoveFavorite = (index) => {
     const spliceFavorite = [...favoriteRecipes].toSpliced(index, 1);
     setFavoriteRecipes(spliceFavorite);
-    localStorage.removeItem('favoriteRecipes');
     localStorage.setItem('favoriteRecipes', JSON.stringify(spliceFavorite));
   };
 
@@ -74,7 +76,7 @@ function FavoritesRecipes() {
     setTimeout(() => {
       setAlert(false);
     }, duration);
-    global.alert('Link copiado!');
+    global.alert('Link copied!');
   };
 
   console.log(favoriteRecipes);
@@ -110,7 +112,6 @@ function FavoritesRecipes() {
             favoriteRecipes.map((recipe, index) => (
               <div key={ index }>
                 <p>{recipe.type}</p>
-                <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
                 <p data-testid={ `${index}-horizontal-top-text` }>
                   {recipe.type === 'meal'
                     ? `${recipe.nationality} - ${recipe.category}`
@@ -120,14 +121,17 @@ function FavoritesRecipes() {
                   to={ recipe.type === 'meal'
                     ? `/meals/${recipe.id}` : `/drinks/${recipe.id}` }
                 >
+                  <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
                   <img
                     data-testid={ `${index}-horizontal-image` }
                     src={ recipe.image }
                     alt={ recipe.name }
+                    className="favorite-recipe-img"
                   />
                 </Link>
                 <button
                   type="button"
+                  src={ shareIcon }
                   data-testid={ `${index}-horizontal-share-btn` }
                   onClick={ () => handleShareBtn(
                     recipe.type === 'meal'
@@ -141,6 +145,7 @@ function FavoritesRecipes() {
                 </button>
                 <button
                   type="button"
+                  src={ blackHeartIcon }
                   data-testid={ `${index}-horizontal-favorite-btn` }
                   onClick={ () => handleRemoveFavorite(index) }
                 >
@@ -153,9 +158,9 @@ function FavoritesRecipes() {
           }
         </div>
       </form>
-      {alert && <p>Link copiado!</p>}
+      {alert && <p>Link copied!</p>}
     </div>
   );
 }
 
-export default FavoritesRecipes;
+export default FavoriteRecipes;
