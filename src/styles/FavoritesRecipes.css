@@ -1,6 +1,6 @@
 .favorite-recipe-img {
-  width: 40%;
+  border-radius: 8px 8px 0 0;
   height: 30vh;
   object-fit: cover;
-  border-radius: 8px 8px 0 0;
+  width: 40%;
 }
