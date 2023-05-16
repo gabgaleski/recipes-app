@@ -46,8 +46,8 @@ export const allDrinks = async () => {
   return data;
 };
 
-export const getCategories = async (server, category) => {
-  const url = `https://www.${server}.com/api/json/v1/1/filter.php?c=${category}`;
+export const getCategories = async (server, categoryName) => {
+  const url = `https://www.${server}.com/api/json/v1/1/filter.php?c=${categoryName}`;
   const response = await fetch(url);
   const data = await response.json();
   return data;

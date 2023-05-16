@@ -11,8 +11,8 @@ import {
 export default function Recipes() {
   const [recipesData, setRecipesData] = useState([]);
   const [category, setCategory] = useState([]);
-  /*   const [specificCategory, setSpecificCategory] = useState(''); */
-  console.log(category);
+  const [specificCategory, setSpecificCategory] = useState('');
+
   const maxLength = 12;
   const maxCategory = 5;
 
@@ -30,6 +30,7 @@ export default function Recipes() {
         setRecipesData(twelveDrinks || []);
       }
     };
+
     const fetchCategories = async () => {
       if (history.location.pathname === '/meals') {
         const categories = await mealCategoryFetch();
@@ -41,6 +42,7 @@ export default function Recipes() {
         setCategory(fiveCategories);
       }
     };
+
     fetchCategories();
     firstTwelve();
   }, [
@@ -62,17 +64,24 @@ export default function Recipes() {
     history.location.pathname,
   ]);
 
-  const fetchCategory = useCallback(async (categorys) => {
-    const categories = await getCategories(serverParameter(), categorys);
-    const twelveCategoryRecipes = categories.slice(0, maxLength);
-    return twelveCategoryRecipes;
+  const fetchCategory = useCallback(async (categoryName) => {
+    setSpecificCategory(categoryName);
+    const categories = await getCategories(serverParameter(), categoryName);
+    const categoryRecipes = categories.meals.slice(0, maxLength);
+    console.log(categoryRecipes);
+    setRecipesData(categoryRecipes || []);
   }, [
     serverParameter,
   ]);
 
   useEffect(() => {
-    fetchCategory();
+    if (specificCategory) {
+      fetchCategory(specificCategory);
+    } else {
+      fetchCategory('');
+    }
   }, [
+    specificCategory,
     fetchCategory,
   ]);
 
@@ -97,27 +106,9 @@ export default function Recipes() {
             ))
         }
       </div>
-      {/*         )
-        : (
-          <div>
-            {
-              category
-                .map((e) => (
-                  <div key={ e }>
-                    <button
-                      type="button"
-                      data-testid={ `${e.strCategory}-category-filter` }
-                      onClick={ () => fetchCategory(e.strCategory) }
-                    >
-                      { e.strCategory }
-                    </button>
-                  </div>
-                ))
-            }
-          </div>
-        )} */}
       <button
         data-testid="All-category-filter"
+        onClick={ () => fetchCategory('') }
       >
         All
       </button>
