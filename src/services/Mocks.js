@@ -38,4 +38,3 @@ export const handleShareBtn = (element) => {
   }, duration);
   global.alert('Link copied!');
 };
-
