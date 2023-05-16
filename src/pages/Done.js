@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import Header from '../components/Header';
 import Context from '../context/Context';
+import DoneRecipes from '../components/DoneRecipes';
 
 function Done() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
@@ -13,6 +14,7 @@ function Done() {
   return (
     <div>
       <Header />
+      <DoneRecipes />
     </div>
   );
 }

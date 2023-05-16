@@ -8,7 +8,7 @@ import SearchBar from '../components/SearchBar';
 import App from '../App';
 import { mockMeals } from '../services/Mocks';
 
-describe('', () => {
+describe('Testes do "SearchBar"', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: async () => (mockMeals),
@@ -65,5 +65,149 @@ describe('', () => {
     userEvent.click(searchButton);
 
     expect(global.fetch).toHaveBeenCalled();
+  });
+
+  it('Testando alerts para mais de um caracter no "First Letter"', () => {
+    const { history } = renderWithRouter(
+      <Provider>
+        <App />
+      </Provider>,
+    );
+
+    act(() => {
+      history.push('/drinks');
+    });
+
+    const searchButton = screen.getByRole('button', {
+      name: 'Busca',
+    });
+    const firstLetter = screen.getByRole('radio', {
+      name: /first letter:/i,
+    });
+
+    const buttonSearchInput = screen.getByRole('img', {
+      name: /search icon/i,
+    });
+
+    act(() => {
+      userEvent.click(buttonSearchInput);
+    });
+
+    const getText = screen.getByRole('textbox');
+
+    userEvent.click(firstLetter);
+    userEvent.type(getText, 'aq');
+
+    act(() => {
+      userEvent.click(searchButton);
+    });
+  });
+
+  it('Testando alerts para receita nao encontrada', () => {
+    const { history } = renderWithRouter(
+      <Provider>
+        <App />
+      </Provider>,
+    );
+
+    act(() => {
+      history.push('/meals');
+    });
+
+    const searchBtn = screen.getByRole('button', {
+      name: 'Busca',
+    });
+    const nameInput = screen.getByRole('radio', {
+      name: /name:/i,
+    });
+
+    const btnInput = screen.getByRole('img', {
+      name: /search icon/i,
+    });
+
+    act(() => {
+      userEvent.click(btnInput);
+    });
+
+    const inputText = screen.getByRole('textbox');
+
+    userEvent.click(nameInput);
+    userEvent.type(inputText, 'cuzcuz');
+
+    act(() => {
+      userEvent.click(searchBtn);
+    });
+  });
+
+  it('Testando redirecionamento quando encontrar apenas uma receita', () => {
+    const { history } = renderWithRouter(
+      <Provider>
+        <App />
+      </Provider>,
+    );
+
+    act(() => {
+      history.push('/drinks');
+    });
+
+    const searchButton = screen.getByRole('button', {
+      name: 'Busca',
+    });
+    const nameInput = screen.getByRole('radio', {
+      name: /name:/i,
+    });
+
+    const buttonSearchInput = screen.getByRole('img', {
+      name: /search icon/i,
+    });
+
+    act(() => {
+      userEvent.click(buttonSearchInput);
+    });
+
+    const getText = screen.getByRole('textbox');
+
+    userEvent.click(nameInput);
+    userEvent.type(getText, 'aquamarine');
+
+    act(() => {
+      userEvent.click(searchButton);
+    });
+  });
+
+  it('Testando se dispara um alert quando a receita nao é encontrada', () => {
+    const { history } = renderWithRouter(
+      <Provider>
+        <App />
+      </Provider>,
+    );
+
+    act(() => {
+      history.push('/meals');
+    });
+
+    const searchButton = screen.getByRole('button', {
+      name: 'Busca',
+    });
+    const nameInput = screen.getByRole('radio', {
+      name: /name:/i,
+    });
+
+    const buttonSearchInput = screen.getByRole('img', {
+      name: /search icon/i,
+    });
+
+    act(() => {
+      userEvent.click(buttonSearchInput);
+    });
+
+    const getText = screen.getByRole('textbox');
+
+    userEvent.click(nameInput);
+    userEvent.type(getText, 'cacau');
+
+    act(() => {
+      userEvent.click(searchButton);
+    });
   });
 });
