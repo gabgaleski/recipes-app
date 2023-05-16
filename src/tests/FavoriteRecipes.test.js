@@ -183,5 +183,7 @@ describe('Testa componente Favorites Recipes', () => {
     const favBtnMeal = await screen.findByTestId('0-horizontal-favorite-btn');
     userEvent.click(favBtnMeal);
     waitFor(() => expect(favBtnMeal).not.toBeInTheDocument());
+
+    // Corrigir
   });
 });
