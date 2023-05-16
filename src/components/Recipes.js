@@ -11,7 +11,7 @@ import {
 export default function Recipes() {
   const [recipesData, setRecipesData] = useState([]);
   const [category, setCategory] = useState([]);
-  const [specificCategory, setSpecificCategory] = useState('');
+  /*   const [specificCategory, setSpecificCategory] = useState(''); */
   console.log(category);
   const maxLength = 12;
   const maxCategory = 5;
