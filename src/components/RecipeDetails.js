@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { FetchIdDrink, FetchIdMeals, FetchRecommendationDrinks, FetchRecommendationMeals }
   from '../services/APIsFetch';
 // import data from './data';
@@ -9,19 +9,12 @@ function RecipeDetails() {
   const [idMeals, setIdMeals] = useState([]);
   const [recommendationMeals, setRecommendationMeals] = useState([]);
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
-  //   const location = useLocation;
-  //   console.log(location.pathname); // Exibe o caminho atual
-  //   console.log(location.search);
 
   const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     const handleChange = async () => {
-      // const dataIdM = await FetchIdMeals('52796');
-      // const dataIDD = await FetchIdDrink('17256');
-      // setIdMeals(dataIdM.meals);
-      // setIdDrinks(dataIDD.drinks);
-
       if (location.pathname.includes('/meals')) {
         const recommendationDrink = await FetchRecommendationDrinks();
         setRecommendationDrinks(recommendationDrink.drinks);
@@ -48,14 +41,19 @@ function RecipeDetails() {
     };
     handleChange();
   }, [location.pathname]);
+
   const measurements = idDrinks.filter((measure) => measure[0].includes('Measure'));
   const ingredients = idDrinks.filter((ingredint) => ingredint[0].includes('Ingredient'));
-
   const measurementsMeals = idMeals.filter((measure) => measure[0].includes('Measure'));
   const ingredientsMeasl = idMeals
     .filter((ingredint) => ingredint[0].includes('Ingredient'));
-  console.log(ingredientsMeasl);
 
+  const handleRedirect = () => {
+    if (location.pathname.includes('/meals')) {
+      history
+        .push(`/meals/${location.pathname.match(/\d+/g)[0]}/in-progress`);
+    } else { history.push(`/drinks/${location.pathname.match(/\d+/g)[0]}/in-progress`); }
+  };
   const magicNumberSix = 6;
   return (
     <div>
@@ -137,12 +135,12 @@ function RecipeDetails() {
       </div>
       <div>
 
-        {ingredientsMeasl.map((ingredient, index) => (
+        {ingredientsMeasl.map((ingredien, index) => (
           <li
-            key={ ingredient[0] }
+            key={ ingredien[0] }
             data-testid={ `${index}-ingredient-name-and-measure` }
           >
-            {`${ingredient[1]}: ${measurementsMeals[index][1]}`}
+            {`${ingredien[1]}: ${measurementsMeals[index][1]}`}
           </li>
         ))}
         ;
@@ -196,7 +194,11 @@ function RecipeDetails() {
           ))
         }
       </div>
-      <button data-testid="start-recipe-btn" className="buttonStart">
+      <button
+        data-testid="start-recipe-btn"
+        className="buttonStart"
+        onClick={ handleRedirect }
+      >
         Start Recipe
       </button>
     </div>
