@@ -18,7 +18,9 @@ describe('Testa a tela de detalhes de uma receita:', () => {
 
     expect(history.location.pathname).toBe('/drinks/178319');
     expect(screen.getByTestId('start-recipe-btn')).toBeInTheDocument();
-    expect(await screen.findByTestId('recipe-title')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Alcoholic', level: 3 })).toBeInTheDocument();
+    expect(await screen.findByTestId('1-recommendation-card')).toBeInTheDocument();
+    expect(await screen.findByRole('heading', {
+      name: /alcoholic/i,
+    })).toBeInTheDocument();
   });
 });

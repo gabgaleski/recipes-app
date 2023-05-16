@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FetchIdDrink, FetchIdMeals, FetchRecommendationDrinks, FetchRecommendationMeals }
+import { FetchIdDrink, FetchIdMeals, allMeals, allDrinks }
   from '../services/APIsFetch';
 // import data from './data';
 
@@ -16,7 +16,7 @@ function RecipeDetails() {
   useEffect(() => {
     const handleChange = async () => {
       if (location.pathname.includes('/meals')) {
-        const recommendationDrink = await FetchRecommendationDrinks();
+        const recommendationDrink = await allDrinks();
         setRecommendationDrinks(recommendationDrink.drinks);
         const dataIdMeals = await FetchIdMeals((location.pathname.match(/\d+/g))[0]);
         Object.keys(dataIdMeals.meals[0]).forEach((key) => {
@@ -27,7 +27,7 @@ function RecipeDetails() {
         });
         setIdMeals(Object.entries(dataIdMeals.meals[0]));
       } else if (location.pathname.includes('/drinks')) {
-        const recommendationMeal = await FetchRecommendationMeals();
+        const recommendationMeal = await allMeals();
         setRecommendationMeals(recommendationMeal.meals);
         const dataIdDrinks = await FetchIdDrink(location.pathname.match(/\d+/g)[0]);
         Object.keys(dataIdDrinks.drinks[0]).forEach((key) => {
