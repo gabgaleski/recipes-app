@@ -18,19 +18,21 @@ export default function Recipes() {
 
   const history = useHistory();
 
-  useEffect(() => {
-    const firstTwelve = async () => {
-      if (history.location.pathname === '/meals') {
-        const meals = await allMeals();
-        const twelveMeals = meals.meals.slice(0, maxLength);
-        setRecipesData(twelveMeals || []);
-      } else if (history.location.pathname === '/drinks') {
-        const drinks = await allDrinks();
-        const twelveDrinks = drinks.drinks.slice(0, maxLength);
-        setRecipesData(twelveDrinks || []);
-      }
-    };
+  const getRecipes = useCallback(async () => {
+    if (history.location.pathname === '/meals') {
+      const meals = await allMeals();
+      const twelveMeals = meals.meals.slice(0, maxLength);
+      setRecipesData(twelveMeals || []);
+    } else if (history.location.pathname === '/drinks') {
+      const drinks = await allDrinks();
+      const twelveDrinks = drinks.drinks.slice(0, maxLength);
+      setRecipesData(twelveDrinks || []);
+    }
+  }, [
+    history.location.pathname,
+  ]);
 
+  useEffect(() => {
     const fetchCategories = async () => {
       if (history.location.pathname === '/meals') {
         const categories = await mealCategoryFetch();
@@ -43,10 +45,11 @@ export default function Recipes() {
       }
     };
 
+    getRecipes();
     fetchCategories();
-    firstTwelve();
   }, [
     history.location.pathname,
+    getRecipes,
     setRecipesData,
     setCategory,
   ]);
@@ -65,13 +68,20 @@ export default function Recipes() {
   ]);
 
   const fetchCategory = useCallback(async (categoryName) => {
+    if (!categoryName) return;
     setSpecificCategory(categoryName);
     const categories = await getCategories(serverParameter(), categoryName);
-    const categoryRecipes = categories.meals.slice(0, maxLength);
-    console.log(categoryRecipes);
-    setRecipesData(categoryRecipes || []);
+    if (history.location.pathname === '/meals') {
+      const categoryRecipes = categories.meals.slice(0, maxLength);
+      setRecipesData(categoryRecipes);
+    } else if (history.location.pathname === '/drinks') {
+      const categoryRecipes = categories.drinks.slice(0, maxLength);
+      setRecipesData(categoryRecipes);
+    }
   }, [
     serverParameter,
+
+    history.location.pathname,
   ]);
 
   useEffect(() => {
@@ -88,8 +98,7 @@ export default function Recipes() {
   return (
     <div>
       <h1>Recipes</h1>
-      {/*      {history.location.pathname === '/meals'
-        ? ( */}
+
       <div>
         {
           category
@@ -108,7 +117,7 @@ export default function Recipes() {
       </div>
       <button
         data-testid="All-category-filter"
-        onClick={ () => fetchCategory('') }
+        onClick={ getRecipes }
       >
         All
       </button>
