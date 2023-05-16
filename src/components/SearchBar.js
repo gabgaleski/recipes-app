@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import Context from '../context/Context';
 import {
   ingredientFetchMeal,
@@ -8,27 +9,42 @@ import {
 } from '../services/APIsFetch';
 
 export default function SearchBar() {
-  const { textSearch, titleHeader, setRecipesSearch } = useContext(Context);
+  const {
+    textSearch,
+    titleHeader,
+    recipesSearch,
+    setRecipesSearch } = useContext(Context);
   const [inputSearch, setInputSearch] = useState('');
+  const history = useHistory();
+  const maxNumber = 12;
 
   const recipeFilter = async (ingredientAPI, nameAPI, firstLetterAPI) => {
+    let response = null;
     if (inputSearch === 'ingredient') {
-      const ingredients = await ingredientAPI(textSearch);
-      setRecipesSearch(ingredients);
+      response = await ingredientAPI(textSearch);
     } else if (inputSearch === 'name') {
-      const names = await nameAPI(textSearch);
-      setRecipesSearch(names);
+      response = await nameAPI(textSearch);
     } else if (inputSearch === 'first-letter') {
       if (textSearch.length > 1) {
-        global.alert('Your search must have only 1 (one) character');
-      } else {
-        const firstLetters = await firstLetterAPI(textSearch);
-        setRecipesSearch(firstLetters);
+        return global.alert('Your search must have only 1 (one) character');
       }
+      response = await firstLetterAPI(textSearch);
+    }
+    if (response[titleHeader.toLowerCase()] !== null) {
+      setRecipesSearch(response[titleHeader.toLowerCase()]);
+    } else {
+      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
+    if (titleHeader === 'Meals' && response.meals.length === 1) {
+      const { idMeal } = response.meals[0];
+      history.push(`/meals/${idMeal}`);
+    } else if (titleHeader === 'Drinks' && response.drinks.length === 1) {
+      const { idDrink } = response.drinks[0];
+      history.push(`/drinks/${idDrink}`);
     }
   };
 
-  const handleSubbmit = async () => {
+  const handleSubbmit = () => {
     if (titleHeader === 'Meals') {
       recipeFilter(ingredientFetchMeal, nameFetchMeal, firsLetterFetchMeal);
     } else {
@@ -36,6 +52,7 @@ export default function SearchBar() {
     }
   };
 
+  console.log(recipesSearch);
   return (
     <div>
       <label>
@@ -75,6 +92,31 @@ export default function SearchBar() {
       >
         Busca
       </button>
+      {recipesSearch.filter((_element, index) => index < maxNumber)
+        .map((element, index) => {
+          if (titleHeader === 'Drinks') {
+            return (
+              <div data-testid={ `${index}-recipe-card` } key={ index }>
+                <img
+                  data-testid={ `${index}-card-img` }
+                  src={ element.strDrinkThumb }
+                  alt="Imagem da receita"
+                />
+                <h4 data-testid={ `${index}-card-name` }>{element.strDrink}</h4>
+              </div>
+            );
+          }
+          return (
+            <div data-testid={ `${index}-recipe-card` } key={ index }>
+              <img
+                data-testid={ `${index}-card-img` }
+                src={ element.strMealThumb }
+                alt="Imagem da receita"
+              />
+              <h4 data-testid={ `${index}-card-name` }>{element.strMeal}</h4>
+            </div>
+          );
+        })}
     </div>
   );
 }

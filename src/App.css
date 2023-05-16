@@ -76,24 +76,27 @@ footer {
   bottom: 0;
   position: fixed;
 }
+
  .carousel {
   display: flex;
+  gap: 10px;
   height: 30vh;
-  width: 25%;
   overflow-x: scroll;
   overflow-y:hidden;
-  gap: 10px;
   white-space: nowrap;
+  width: 25%;
 }
+
  .displayCard {
   height: 100%;
   width: 50%;
-
 }
+
  .recommendationImage {
   height: 50%;
 }
+
  .recipePhoto {
-  width: 30%;
   height: 30%;
+  width: 30%;
 }
