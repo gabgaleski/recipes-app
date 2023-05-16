@@ -42,6 +42,10 @@ test('Farewell, front-end', () => {
   expect(title).toBeInTheDocument();
   expect(imgProfile).toBeInTheDocument();
 
+  userEvent.type(textSearch, 'chicken');
+
+  expect(textSearch.value).toBe('chicken');
+
   act(() => {
     userEvent.click(buttonSearch);
   });

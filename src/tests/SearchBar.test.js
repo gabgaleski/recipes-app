@@ -1,6 +1,7 @@
 import React from 'react';
-import { screen, act } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import Provider from '../context/Provider';
 import renderWithRouter from '../services/renderWithRouter';
 import SearchBar from '../components/SearchBar';
@@ -40,7 +41,7 @@ describe('', () => {
     );
 
     act(() => {
-      history.push('/drinks');
+      history.push('/meals');
     });
 
     const ingredientInput = screen.getByLabelText(/Ingredient:/i);
@@ -50,24 +51,18 @@ describe('', () => {
       name: 'Busca',
     });
 
-    act(() => {
-      userEvent.click(ingredientInput);
-      userEvent.click(searchButton);
-    });
+    userEvent.click(ingredientInput);
+    userEvent.click(searchButton);
 
     expect(global.fetch).toHaveBeenCalled();
 
-    act(() => {
-      userEvent.click(nameInput);
-      userEvent.click(searchButton);
-    });
+    userEvent.click(nameInput);
+    userEvent.click(searchButton);
 
     expect(global.fetch).toHaveBeenCalled();
 
-    act(() => {
-      userEvent.click(firstLetterInput);
-      userEvent.click(searchButton);
-    });
+    userEvent.click(firstLetterInput);
+    userEvent.click(searchButton);
 
     expect(global.fetch).toHaveBeenCalled();
   });
