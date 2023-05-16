@@ -1,6 +1,8 @@
+import RecipeDetails from '../components/RecipeDetails';
+
 function DrinksDetails() {
   return (
-    <h2>Drinks Details</h2>
+    <RecipeDetails />
   );
 }
 
