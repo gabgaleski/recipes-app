@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import copy from 'clipboard-copy';
-import { FetchIdDrink, FetchIdMeals, allMeals, allDrinks }
-  from '../services/APIsFetch';
+import { FetchIdDrink, FetchIdMeals, allMeals, allDrinks } from '../services/APIsFetch';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import useLocalStorage from '../hooks/useLocalStorage';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function RecipeDetails() {
   const [idDrinks, setIdDrinks] = useState([]);
@@ -13,10 +14,11 @@ function RecipeDetails() {
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
   const [copyRecipe, setCopyRecipe] = useState(false);
   const [favoritMealOrDrink, setFavoriteMealOrDrink] = useState([]);
-  const [saveFavorit, setSaveFavorit] = useState([]);
-
+  const [saveFavorit, setSaveFavorit] = useLocalStorage('favoriteRecipes', []);
   const location = useLocation();
   const history = useHistory();
+  const namePage = location.pathname.includes('drinks') ? 'Drink' : 'Meal';
+  const id = `id${namePage}`;
 
   useEffect(() => {
     const handleChange = async () => {
@@ -56,17 +58,21 @@ function RecipeDetails() {
   };
 
   const favoriteRecipe = () => {
-    {
-      setSaveFavorit((prevState) => [...prevState, {
-        id: favoritMealOrDrink.idDrink,
-        type: 'drink',
-        nationality: '',
-        category: favoritMealOrDrink.strCategory,
-        alcoholicOrNot: favoritMealOrDrink.strAlcoholic,
-        name: favoritMealOrDrink.strDrink,
-        image: favoritMealOrDrink.strDrinkThumb,
-      }]);
-    }
+    const save = {
+      id: favoritMealOrDrink[id],
+      type: namePage.toLowerCase(),
+      nationality: favoritMealOrDrink.strArea ? favoritMealOrDrink.strArea : '',
+      category: favoritMealOrDrink.strCategory,
+      alcoholicOrNot:
+      favoritMealOrDrink.strAlcoholic ? favoritMealOrDrink.strAlcoholic : '',
+      name:
+      favoritMealOrDrink.strDrink
+        ? favoritMealOrDrink.strDrink : favoritMealOrDrink.strMeal,
+      image:
+      favoritMealOrDrink.strDrinkThumb
+        ? favoritMealOrDrink.strDrinkThumb : favoritMealOrDrink.strMealThumb,
+    };
+    setSaveFavorit([...saveFavorit, save]);
   };
 
   const measurements = idDrinks.filter((measure) => measure[0].includes('Measure'));
@@ -105,9 +111,7 @@ function RecipeDetails() {
           default: return null;
           }
         },
-
       )
-
         : idMeals.map((element, index) => {
           if (element[0].includes('Ingredient')) {
             return (
@@ -117,7 +121,6 @@ function RecipeDetails() {
               >
                 {element[1]}
               </li>
-
             );
           }
           switch (element[0]) {
@@ -148,7 +151,6 @@ function RecipeDetails() {
           }
         })}
       <div>
-
         {ingredients.map((ingredient, index) => (
           <li
             key={ ingredient[0] }
@@ -157,11 +159,8 @@ function RecipeDetails() {
             {`${ingredient[1]} : ${measurements[index][1]}`}
           </li>
         ))}
-        ;
-
       </div>
       <div>
-
         {ingredientsMeasl.map((ingredien, index) => (
           <li
             key={ ingredien[0] }
@@ -170,13 +169,10 @@ function RecipeDetails() {
             {`${ingredien[1]}: ${measurementsMeals[index][1]}`}
           </li>
         ))}
-        ;
       </div>
       <div className="carousel">
         {
-
           recommendationMeals.slice(0, magicNumberSix).map((recommendation, index) => (
-
             <div
               className="displayCard"
               data-testid={ `${index}-recommendation-card` }
@@ -184,7 +180,6 @@ function RecipeDetails() {
             >
               <h2 data-testid={ `${index}-recommendation-title` }>
                 {recommendation.strMeal}
-
               </h2>
               <img
                 src={ recommendation.strMealThumb }
@@ -192,51 +187,46 @@ function RecipeDetails() {
                 className="recommendationImage"
               />
             </div>
-
           ))
         }
       </div>
       <div className="carousel">
         {
           recommendationDrinks.slice(0, magicNumberSix).map((recommendation, index) => (
-
             <div
               key={ recommendation.idDrink }
               className="displayCard"
               data-testid={ `${index}-recommendation-card` }
             >
-
               <h2 data-testid={ `${index}-recommendation-title` }>
                 {recommendation.strDrink}
-
               </h2>
               <img
                 src={ recommendation.strDrinkThumb }
                 alt={ recommendation.strArea }
                 className="recommendationImage"
               />
-
             </div>
-
           ))
         }
       </div>
-
       <button
         data-testid="start-recipe-btn"
         className="buttonStart"
         onClick={ handleRedirect }
       >
-
         Start Recipe
       </button>
-
       { copyRecipe && <p>Link copied!</p>}
       <button data-testid="share-btn" onClick={ copyLink }>
         <img src={ shareIcon } alt="Botao de Compartilhar" />
       </button>
-      <button data-testid="favorite-btn" onClick={ favoriteRecipe }>
-        <img src={ whiteHeartIcon } alt="Botao de Favoritar" />
+      <button onClick={ favoriteRecipe }>
+        <img
+          data-testid="favorite-btn"
+          src={ saveFavorit.some((e) => e.id === location.pathname.match(/\d+/g)[0]) ? blackHeartIcon : whiteHeartIcon }
+          alt="Botao de Favoritar"
+        />
       </button>
     </div>
   );
