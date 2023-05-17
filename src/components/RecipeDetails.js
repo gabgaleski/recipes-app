@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import copy from 'clipboard-copy';
 import { FetchIdDrink, FetchIdMeals, allMeals, allDrinks }
   from '../services/APIsFetch';
 import shareIcon from '../images/shareIcon.svg';
@@ -10,6 +11,7 @@ function RecipeDetails() {
   const [idMeals, setIdMeals] = useState([]);
   const [recommendationMeals, setRecommendationMeals] = useState([]);
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
+  const [copyRecipe, setCopyRecipe] = useState(false);
 
   const location = useLocation();
   const history = useHistory();
@@ -42,6 +44,12 @@ function RecipeDetails() {
     };
     handleChange();
   }, [location.pathname]);
+
+  const copyLink = () => {
+    const local = location.pathname;
+    copy(`http://localhost:3000${local}`);
+    setCopyRecipe(true);
+  };
 
   const measurements = idDrinks.filter((measure) => measure[0].includes('Measure'));
   const ingredients = idDrinks.filter((ingredint) => ingredint[0].includes('Ingredient'));
@@ -195,14 +203,18 @@ function RecipeDetails() {
           ))
         }
       </div>
+
       <button
         data-testid="start-recipe-btn"
         className="buttonStart"
         onClick={ handleRedirect }
       >
+
         Start Recipe
       </button>
-      <button data-testid="share-btn">
+
+      { copyRecipe && <p>Link copied!</p>}
+      <button data-testid="share-btn" onClick={ copyLink }>
         <img src={ shareIcon } alt="Botao de Compartilhar" />
       </button>
       <button data-testid="favorite-btn">

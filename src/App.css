@@ -75,6 +75,9 @@ footer {
 .buttonStart {
   bottom: 0;
   position: fixed;
+  left: 50%;
+  right: 50%;
+  width: 80px;
 }
 
 .carousel {
@@ -100,3 +103,5 @@ footer {
   height: 30%;
   width: 30%;
 }
+
+
