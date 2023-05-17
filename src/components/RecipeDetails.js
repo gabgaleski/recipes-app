@@ -12,6 +12,8 @@ function RecipeDetails() {
   const [recommendationMeals, setRecommendationMeals] = useState([]);
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
   const [copyRecipe, setCopyRecipe] = useState(false);
+  const [favoritMealOrDrink, setFavoriteMealOrDrink] = useState([]);
+  const [saveFavorit, setSaveFavorit] = useState([]);
 
   const location = useLocation();
   const history = useHistory();
@@ -22,6 +24,7 @@ function RecipeDetails() {
         const recommendationDrink = await allDrinks();
         setRecommendationDrinks(recommendationDrink.drinks);
         const dataIdMeals = await FetchIdMeals((location.pathname.match(/\d+/g))[0]);
+        setFavoriteMealOrDrink(dataIdMeals.meals[0]);
         Object.keys(dataIdMeals.meals[0]).forEach((key) => {
           if (
             dataIdMeals.meals[0][key] === null || dataIdMeals.meals[0][key] === '') {
@@ -33,6 +36,7 @@ function RecipeDetails() {
         const recommendationMeal = await allMeals();
         setRecommendationMeals(recommendationMeal.meals);
         const dataIdDrinks = await FetchIdDrink(location.pathname.match(/\d+/g)[0]);
+        setFavoriteMealOrDrink(dataIdDrinks.drinks[0]);
         Object.keys(dataIdDrinks.drinks[0]).forEach((key) => {
           if (
             dataIdDrinks.drinks[0][key] === null || dataIdDrinks.drinks[0][key] === '') {
@@ -49,6 +53,20 @@ function RecipeDetails() {
     const local = location.pathname;
     copy(`http://localhost:3000${local}`);
     setCopyRecipe(true);
+  };
+
+  const favoriteRecipe = () => {
+    {
+      setSaveFavorit((prevState) => [...prevState, {
+        id: favoritMealOrDrink.idDrink,
+        type: 'drink',
+        nationality: '',
+        category: favoritMealOrDrink.strCategory,
+        alcoholicOrNot: favoritMealOrDrink.strAlcoholic,
+        name: favoritMealOrDrink.strDrink,
+        image: favoritMealOrDrink.strDrinkThumb,
+      }]);
+    }
   };
 
   const measurements = idDrinks.filter((measure) => measure[0].includes('Measure'));
@@ -217,7 +235,7 @@ function RecipeDetails() {
       <button data-testid="share-btn" onClick={ copyLink }>
         <img src={ shareIcon } alt="Botao de Compartilhar" />
       </button>
-      <button data-testid="favorite-btn">
+      <button data-testid="favorite-btn" onClick={ favoriteRecipe }>
         <img src={ whiteHeartIcon } alt="Botao de Favoritar" />
       </button>
     </div>
