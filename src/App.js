@@ -9,8 +9,6 @@ import Meals from './pages/Meals';
 import Drinks from './pages/Drinks';
 import MealsDetails from './pages/MealsDetails';
 import DrinksDetails from './pages/DrinksDetails';
-// import DrinksProgress from './pages/DrinksProgress';
-// import MealsProgress from './pages/MealsProgress';
 import RecipeInProgress from './components/RecipeInProgress';
 
 function App() {

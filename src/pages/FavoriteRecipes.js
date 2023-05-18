@@ -12,28 +12,6 @@ function FavoriteRecipes() {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [recipeFilter, setRecipeFilter] = useState('All');
 
-  useEffect(() => {
-    const mockRecipes = [{
-      id: '52771',
-      type: 'meal',
-      nationality: 'Italian',
-      category: 'Vegetarian',
-      alcoholicOrNot: 'Alcoholic',
-      name: 'Spicy Arrabiata Penne',
-      image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    },
-    {
-      id: '178319',
-      type: 'drink',
-      nationality: 'Italian',
-      category: 'Vegetarian',
-      alcoholicOrNot: 'Alcoholic',
-      name: 'Aquamarine',
-      image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-    }];
-    localStorage.setItem('favoriteRecipes', JSON.stringify(mockRecipes));
-  }, []);
-
   const getFavoriteRecipes = useCallback(() => {
     const favoriteRecipesStorage = JSON.parse(localStorage.getItem('favoriteRecipes'));
     if (favoriteRecipesStorage) {
@@ -62,8 +40,9 @@ function FavoriteRecipes() {
     }
   };
 
-  const handleRemoveFavorite = (index) => {
-    const spliceFavorite = [...favoriteRecipes].toSpliced(index, 1);
+  const handleRemoveFavorite = (recipeIndex) => {
+    const spliceFavorite = favoriteRecipes.filter((_e, index) => index !== recipeIndex);
+    console.log(spliceFavorite);
     setFavoriteRecipes(spliceFavorite);
     localStorage.setItem('favoriteRecipes', JSON.stringify(spliceFavorite));
   };
@@ -78,7 +57,6 @@ function FavoriteRecipes() {
     global.alert('Link copied!');
   };
 
-  console.log(favoriteRecipes);
   return (
     <div>
       <Header />

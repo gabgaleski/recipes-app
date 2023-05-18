@@ -14,7 +14,7 @@ const shareBtn = '0-horizontal-share-btn';
 const favBtn = '0-horizontal-favorite-btn';
 describe('Testa componente Favorites Recipes', () => {
   beforeEach(() => {
-    localStorage.clear(); // Limpa o localStorage antes de cada teste
+    localStorage.setItem('favoriteRecipes', JSON.stringify(mockFavRecipe));
   });
   it('testa se renderiza inputs no componente Favorites Recipes', async () => {
     renderWithRouter(
@@ -43,7 +43,6 @@ describe('Testa componente Favorites Recipes', () => {
       </Provider>,
     );
 
-    localStorage.setItem('favoriteRecipes', JSON.stringify(mockFavRecipe));
     const cardImageMeal = await screen.findByTestId(cardImage);
     const cardTitleMeal = await screen.findByTestId('0-horizontal-name');
     const cardTextMeal = await screen.findByTestId('0-horizontal-top-text');
@@ -73,7 +72,6 @@ describe('Testa componente Favorites Recipes', () => {
       </Provider>,
     );
 
-    localStorage.setItem('favoriteRecipes', JSON.stringify(mockFavRecipe));
     const cardImageMeal = await screen.findByTestId(cardImage);
     const cardTitleMeal = await screen.findByTestId('0-horizontal-name');
     const cardTextMeal = await screen.findByTestId('0-horizontal-top-text');
@@ -140,13 +138,15 @@ describe('Testa componente Favorites Recipes', () => {
         </Router>
       </Provider>,
     );
-    localStorage.setItem('favoriteRecipes', JSON.stringify(mockFavRecipe));
-    history.push('/favorite-recipes');
+
+    act(() => {
+      history.push('/favorite-recipes');
+    });
 
     const img = screen.getByTestId('0-horizontal-image');
     expect(img).toBeInTheDocument();
     userEvent.click(img);
-    expect(history.location.pathname).toBe('/meals/52771');
+    expect(history.location.pathname).toBe('/meals/52940');
   });
 
   it('Testa se botão de compartilhar funciona', async () => {
@@ -179,11 +179,19 @@ describe('Testa componente Favorites Recipes', () => {
       </Provider>,
     );
 
-    localStorage.setItem('favoriteRecipes', JSON.stringify(mockFavRecipe));
-    const favBtnMeal = await screen.findByTestId('0-horizontal-favorite-btn');
-    userEvent.click(favBtnMeal);
-    waitFor(() => expect(favBtnMeal).not.toBeInTheDocument());
+    const favBtnMeal = screen.getAllByRole('img', {
+      name: /favorite icon/i,
+    });
 
-    // Corrigir
+    userEvent.click(favBtnMeal[0]);
+    waitFor(() => expect(favBtnMeal[0]).not.toBeInTheDocument());
+
+    const buttonShare = screen.getByRole('img', {
+      name: /share icon/i,
+    });
+
+    act(() => {
+      userEvent.click(buttonShare);
+    });
   });
 });
