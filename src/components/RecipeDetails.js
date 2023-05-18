@@ -72,7 +72,12 @@ function RecipeDetails() {
       favoritMealOrDrink.strDrinkThumb
         ? favoritMealOrDrink.strDrinkThumb : favoritMealOrDrink.strMealThumb,
     };
-    setSaveFavorit([...saveFavorit, save]);
+    if (saveFavorit.some((e) => e.id === save.id)) {
+      const newArray = saveFavorit.filter((e) => e.id !== save.id);
+      setSaveFavorit(newArray);
+    } else {
+      setSaveFavorit([...saveFavorit, save]);
+    }
   };
 
   const measurements = idDrinks.filter((measure) => measure[0].includes('Measure'));
