@@ -226,6 +226,9 @@ it('Testa a renderização do Recipe in Progress da pagiga meals', async () => {
   userEvent.click(ingredient6);
   userEvent.click(ingredient7);
   userEvent.click(ingredient8);
+  userEvent.click(screen.getByRole('img', {
+    name: /botao favoritar/i,
+  }));
   expect(finishButton).toBeEnabled();
   userEvent.click(finishButton);
 });

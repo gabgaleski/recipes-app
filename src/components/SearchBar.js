@@ -52,7 +52,6 @@ export default function SearchBar() {
     }
   };
 
-  console.log(recipesSearch);
   return (
     <div>
       <label>

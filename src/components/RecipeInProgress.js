@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import useLocalStorage from '../hooks/useLocalStorage';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function RecipeInProgress(props) {
   const [currentRecipe, setCurrentRecipe] = useState(null);
@@ -11,9 +14,10 @@ function RecipeInProgress(props) {
   const [doneRecipes, setDoneRecipes] = useLocalStorage('doneRecipes', []);
   const [errorNotification, setErrorNotification] = useState(null);
   const [allIngredientsCompleted, setAllIngredientsCompleted] = useState(false);
+  const [getLocalFav, setGetLocalFav] = useState([]);
   const history = useHistory();
+  const location = useLocation();
 
-  // cria um array que contém os nomes das propriedades dos ingredientes
   const numIngredientes = 20;
   const ingredientesIndex = useMemo(() => Array.from(
     { length: numIngredientes },
@@ -31,6 +35,11 @@ function RecipeInProgress(props) {
 
   // atualiza o estado das variáveis
   useEffect(() => {
+    if (localStorage.getItem('favoriteRecipes')) {
+      setGetLocalFav(JSON.parse(localStorage.getItem('favoriteRecipes')));
+    } else {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    }
     const checkQuantity = () => {
       if (currentRecipe) {
         const cont = ingredientesIndex.reduce(
@@ -91,6 +100,26 @@ function RecipeInProgress(props) {
         [id]:
         [...modifiedIngredients],
       });
+    }
+  };
+
+  const favoriteRecipe = () => {
+    const save = {
+      id,
+      type: currentPage === 'meals' ? 'meal' : 'drink',
+      nationality: currentRecipe.strArea || '',
+      category: currentRecipe.strCategory || '',
+      alcoholicOrNot: currentRecipe.strAlcoholic || '',
+      name: currentRecipe.strMeal || currentRecipe.strDrink,
+      image: currentRecipe.strDrinkThumb || currentRecipe.strMealThumb,
+    };
+    if (getLocalFav.some((e) => e.id === save.id)) {
+      const newArray = getLocalFav.filter((e) => e.id !== save.id);
+      setGetLocalFav(newArray);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newArray));
+    } else {
+      setGetLocalFav([...getLocalFav, save]);
+      localStorage.setItem('favoriteRecipes', JSON.stringify([...getLocalFav, save]));
     }
   };
 
@@ -180,17 +209,20 @@ function RecipeInProgress(props) {
 
         <section>
           <button
+            src={ shareIcon }
             type="button"
             data-testid="share-btn"
             onClick={ handleCopyLink }
           >
-            Compartilhar
+            <img src={ shareIcon } alt="Botao compartilhar" />
           </button>
           <button
+            onClick={ favoriteRecipe }
+            src={ getLocalFav.some((e) => e.id === location.pathname.match(/\d+/g)[0]) ? blackHeartIcon : whiteHeartIcon }
             type="button"
             data-testid="favorite-btn"
           >
-            Favorita
+            <img src={ getLocalFav.some((e) => e.id === location.pathname.match(/\d+/g)[0]) ? blackHeartIcon : whiteHeartIcon } alt="Botao Favoritar" />
           </button>
           <button
             type="button"

@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import drinkIcon from '../images/drinkIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
+import Context from '../context/Context';
 
 export default function Footer() {
   const history = useHistory();
+  const { setRecipesSearch, setTextSearch } = useContext(Context);
 
   const redirectToDrinks = () => {
     history.push('/drinks');
+    setRecipesSearch([]);
+    setTextSearch('');
   };
 
   const redirectToMeals = () => {
     history.push('/meals');
+    setRecipesSearch([]);
+    setTextSearch('');
   };
 
   return (

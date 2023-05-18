@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   allMeals,
   allDrinks,
@@ -137,11 +137,13 @@ export default function Recipes() {
                     >
                       { e.strMeal }
                     </h2>
-                    <img
-                      data-testid={ `${index}-card-img` }
-                      src={ e.strMealThumb }
-                      alt={ e.strMeal }
-                    />
+                    <Link to={ `/meals/${e.idMeal}` }>
+                      <img
+                        data-testid={ `${index}-card-img` }
+                        src={ e.strMealThumb }
+                        alt={ e.strMeal }
+                      />
+                    </Link>
                   </div>))
             }
           </div>
@@ -160,11 +162,13 @@ export default function Recipes() {
                     >
                       { e.strDrink }
                     </h2>
-                    <img
-                      data-testid={ `${index}-card-img` }
-                      src={ e.strDrinkThumb }
-                      alt={ e.strDrink }
-                    />
+                    <Link to={ `/drinks/${e.idDrink}` }>
+                      <img
+                        data-testid={ `${index}-card-img` }
+                        src={ e.strDrinkThumb }
+                        alt={ e.strDrink }
+                      />
+                    </Link>
                   </div>))
             }
           </div>
