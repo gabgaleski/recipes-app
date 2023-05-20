@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import copy from 'clipboard-copy';
+import YouTube from 'react-youtube';
 import { FetchIdDrink, FetchIdMeals, allMeals, allDrinks } from '../services/APIsFetch';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
@@ -81,7 +82,8 @@ function RecipeDetails() {
   };
 
   const measurements = idDrinks.filter((measure) => measure[0].includes('Measure'));
-  const ingredients = idDrinks.filter((ingredint) => ingredint[0].includes('Ingredient'));
+  const ingredients = idDrinks.filter((ingredint) => ingredint[0].includes('Ingredient'))
+    .filter((e) => e.splice(0, 1));
   const measurementsMeals = idMeals.filter((measure) => measure[0].includes('Measure'));
   const ingredientsMeasl = idMeals
     .filter((ingredint) => ingredint[0].includes('Ingredient'));
@@ -128,6 +130,15 @@ function RecipeDetails() {
               </li>
             );
           }
+          if (element[0] === 'strYoutube') {
+            const getUrl = element[1];
+            const delimiter = 'watch?v=';
+            const partes = getUrl.split(delimiter);
+            const codigoVideo = partes[1];
+            return (
+              <YouTube key={ element[0] } title="Video" videoId={ codigoVideo } />
+            );
+          }
           switch (element[0]) {
           case 'strMeal':
             return <h1 data-testid="recipe-title">{element[1]}</h1>;
@@ -142,26 +153,15 @@ function RecipeDetails() {
             return <h3 data-testid="recipe-category">{element[1]}</h3>;
           case 'strInstructions':
             return <li data-testid="instructions">{element[1]}</li>;
-          case 'strYoutube':
-            return (
-              <iframe
-                data-testid="video"
-                width="420"
-                height="315"
-                src={ element[1] }
-                title="video"
-              />
-            );
           default: return null;
           }
         })}
       <div>
         {ingredients.map((ingredient, index) => (
           <li
-            key={ ingredient[0] }
-            data-testid={ `${index}-ingredient-name-and-measure` }
+            key={ ingredient }
           >
-            {`${ingredient[1]} : ${measurements[index][1]}`}
+            {`${ingredient} : ${measurements[index][1]}`}
           </li>
         ))}
       </div>
@@ -171,7 +171,7 @@ function RecipeDetails() {
             key={ ingredien[0] }
             data-testid={ `${index}-ingredient-name-and-measure` }
           >
-            {`${ingredien[1]}: ${measurementsMeals[index][1]}`}
+            {`${ingredien}: ${measurementsMeals[index][1]}`}
           </li>
         ))}
       </div>
