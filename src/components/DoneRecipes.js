@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
-import '../DoneRecipes.css';
+import '../styles/DoneRecipes.css';
 
 function DoneRecipes() {
   const [recipesDone, setRecipesDone] = useState([]);
