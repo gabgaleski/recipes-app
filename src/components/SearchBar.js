@@ -13,7 +13,7 @@ export default function SearchBar() {
     textSearch,
     titleHeader,
     recipesSearch,
-    setRecipesSearch } = useContext(Context);
+    setRecipesData } = useContext(Context);
   const [inputSearch, setInputSearch] = useState('');
   const history = useHistory();
   const maxNumber = 12;
@@ -31,7 +31,7 @@ export default function SearchBar() {
       response = await firstLetterAPI(textSearch);
     }
     if (response[titleHeader.toLowerCase()] !== null) {
-      setRecipesSearch(response[titleHeader.toLowerCase()]);
+      setRecipesData(response[titleHeader.toLowerCase()]);
     } else {
       return global.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
@@ -53,41 +53,45 @@ export default function SearchBar() {
   };
 
   return (
-    <div>
-      <label>
-        Ingredient:
-        <input
-          type="radio"
-          data-testid="ingredient-search-radio"
-          name="search-radio"
-          value="ingredient"
-          onChange={ ({ target }) => setInputSearch(target.value) }
-        />
-      </label>
-      <label>
-        Name:
-        <input
-          type="radio"
-          data-testid="name-search-radio"
-          name="search-radio"
-          value="name"
-          onChange={ ({ target }) => setInputSearch(target.value) }
-        />
-      </label>
-      <label>
-        First Letter:
-        <input
-          type="radio"
-          data-testid="first-letter-search-radio"
-          name="search-radio"
-          value="first-letter"
-          onChange={ ({ target }) => setInputSearch(target.value) }
-        />
-      </label>
+    <div className="searchBar-container">
+      <div className="search-inputs">
+        <label>
+          Ingredient:
+          <input
+            type="radio"
+            data-testid="ingredient-search-radio"
+            name="search-radio"
+            value="ingredient"
+            onChange={ ({ target }) => setInputSearch(target.value) }
+          />
+        </label>
+        <label>
+          Name:
+          <input
+            type="radio"
+            data-testid="name-search-radio"
+            name="search-radio"
+            value="name"
+            onChange={ ({ target }) => setInputSearch(target.value) }
+          />
+        </label>
+        <label>
+          First Letter:
+          <input
+            type="radio"
+            data-testid="first-letter-search-radio"
+            name="search-radio"
+            value="first-letter"
+            onChange={ ({ target }) => setInputSearch(target.value) }
+          />
+        </label>
+      </div>
       <button
         type="button"
         data-testid="exec-search-btn"
         onClick={ handleSubbmit }
+        className=" button-submit rounded-md
+         shadow-sm"
       >
         Busca
       </button>

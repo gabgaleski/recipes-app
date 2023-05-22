@@ -44,6 +44,10 @@ describe('Testes do "SearchBar"', () => {
       history.push('/meals');
     });
 
+    userEvent.click(screen.getByRole('img', {
+      name: /search icon/i,
+    }));
+
     const ingredientInput = screen.getByLabelText(/Ingredient:/i);
     const nameInput = screen.getByLabelText(/name/i);
     const firstLetterInput = screen.getByLabelText(/first letter/i);
@@ -77,6 +81,10 @@ describe('Testes do "SearchBar"', () => {
     act(() => {
       history.push('/drinks');
     });
+
+    userEvent.click(screen.getByRole('img', {
+      name: /search icon/i,
+    }));
 
     const searchButton = screen.getByRole('button', {
       name: 'Busca',
@@ -114,6 +122,10 @@ describe('Testes do "SearchBar"', () => {
       history.push('/meals');
     });
 
+    userEvent.click(screen.getByRole('img', {
+      name: /search icon/i,
+    }));
+
     const searchBtn = screen.getByRole('button', {
       name: 'Busca',
     });
@@ -150,6 +162,10 @@ describe('Testes do "SearchBar"', () => {
       history.push('/drinks');
     });
 
+    userEvent.click(screen.getByRole('img', {
+      name: /search icon/i,
+    }));
+
     const searchButton = screen.getByRole('button', {
       name: 'Busca',
     });
@@ -185,6 +201,10 @@ describe('Testes do "SearchBar"', () => {
     act(() => {
       history.push('/meals');
     });
+
+    userEvent.click(screen.getByRole('img', {
+      name: /search icon/i,
+    }));
 
     const searchButton = screen.getByRole('button', {
       name: 'Busca',

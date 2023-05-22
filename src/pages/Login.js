@@ -62,7 +62,6 @@ function Login() {
             />
           </div>
         </div>
-
         <div>
           <div className="flex items-center justify-between">
             <label
@@ -96,7 +95,6 @@ function Login() {
             />
           </div>
         </div>
-
         <div>
           <button
             data-testid="login-submit-btn"

@@ -1,5 +1,18 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import '../styles/Recipes.css';
+import All from '../images/All.svg';
+import Breakfast from '../images/breakfast.svg';
+import Chicken from '../images/chicken.svg';
+import Dessert from '../images/dessert.svg';
+import Goat from '../images/goat.svg';
+import Beef from '../images/beef.svg';
+import AllDrinks from '../images/AllDrinks.svg';
+import ordinary from '../images/ordinary.svg';
+import other from '../images/other.svg';
+import shake from '../images/shake.svg';
+import cocoa from '../images/cocoa.svg';
+import cocktail from '../images/cocktail.svg';
 import {
   allMeals,
   allDrinks,
@@ -7,15 +20,16 @@ import {
   mealCategoryFetch,
   drinkCategoryFetch,
 } from '../services/APIsFetch';
+import Context from '../context/Context';
 
 export default function Recipes() {
-  const [recipesData, setRecipesData] = useState([]);
   const [category, setCategory] = useState([]);
   const [specificCategory, setSpecificCategory] = useState('');
-
+  const imgArray = [Beef, Breakfast, Chicken, Dessert, Goat];
+  const { recipesData, setRecipesData } = useContext(Context);
   const maxLength = 12;
   const maxCategory = 5;
-
+  const imgArrayDrinks = [ordinary, cocktail, shake, other, cocoa];
   const history = useHistory();
 
   const getRecipes = useCallback(async () => {
@@ -29,7 +43,7 @@ export default function Recipes() {
       setRecipesData(twelveDrinks || []);
     }
   }, [
-    history.location.pathname,
+    history.location.pathname, setRecipesData,
   ]);
 
   useEffect(() => {
@@ -80,8 +94,8 @@ export default function Recipes() {
     }
   }, [
     serverParameter,
-
     history.location.pathname,
+    setRecipesData,
   ]);
 
   useEffect(() => {
@@ -97,78 +111,90 @@ export default function Recipes() {
 
   return (
     <div>
-      <h1>Recipes</h1>
-
-      <div>
+      <div className="buttons-container">
+        <div>
+          <button
+            data-testid="All-category-filter"
+            onClick={ getRecipes }
+          >
+            <img
+              src={ history.location.pathname === '/meals' ? All : AllDrinks }
+              alt="Filtro All"
+            />
+          </button>
+        </div>
         {
           category
-            .map((e) => (
+            .map((e, index) => (
               <div key={ e.strCategory }>
                 <button
                   type="button"
                   data-testid={ `${e.strCategory}-category-filter` }
                   onClick={ () => fetchCategory(e.strCategory) }
                 >
-                  { e.strCategory }
+                  <img
+                    src={ history.location.pathname === '/meals' ? imgArray[index]
+                      : imgArrayDrinks[index] }
+                    alt="Imagens dos Botoes"
+                  />
                 </button>
               </div>
             ))
         }
       </div>
-      <button
-        data-testid="All-category-filter"
-        onClick={ getRecipes }
-      >
-        All
-      </button>
-
       {history.location.pathname === '/meals'
         ? (
-          <div>
+          <div className="recipes-container">
             {
               recipesData
                 .map((e, index) => (
                   <div
+                    className="cards-container"
                     key={ e.idMeal }
                     data-testid={ `${index}-recipe-card` }
                   >
-                    <h2
-                      data-testid={ `${index}-card-name` }
+                    <Link
+                      to={ `/meals/${e.idMeal}` }
                     >
-                      { e.strMeal }
-                    </h2>
-                    <Link to={ `/meals/${e.idMeal}` }>
                       <img
+                        className="image-card"
                         data-testid={ `${index}-card-img` }
                         src={ e.strMealThumb }
                         alt={ e.strMeal }
                       />
                     </Link>
+                    <h2
+                      data-testid={ `${index}-card-name` }
+                    >
+                      { e.strMeal }
+                    </h2>
                   </div>))
             }
           </div>
         )
         : (
-          <div>
+          <div className="recipes-container">
             {
               recipesData
                 .map((e, index) => (
                   <div
+                    className="cards-container"
                     key={ e.idDrink }
                     data-testid={ `${index}-recipe-card` }
                   >
-                    <h2
-                      data-testid={ `${index}-card-name` }
-                    >
-                      { e.strDrink }
-                    </h2>
                     <Link to={ `/drinks/${e.idDrink}` }>
                       <img
+                        className="image-card"
                         data-testid={ `${index}-card-img` }
                         src={ e.strDrinkThumb }
                         alt={ e.strDrink }
                       />
                     </Link>
+                    <h2
+                      data-testid={ `${index}-card-name` }
+                    >
+                      { e.strDrink }
+                    </h2>
                   </div>))
             }
           </div>
