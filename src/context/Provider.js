@@ -8,6 +8,8 @@ function Provider({ children }) {
   const [textSearch, setTextSearch] = useState('');
   const [recipesSearch, setRecipesSearch] = useState([]);
   const [recipesData, setRecipesData] = useState([]);
+  const [recommendationMeals, setRecommendationMeals] = useState([]);
+  const [recommendationDrinks, setRecommendationDrinks] = useState([]);
 
   const values = useMemo(
     () => ({
@@ -21,6 +23,10 @@ function Provider({ children }) {
       setRecipesSearch,
       recipesData,
       setRecipesData,
+      recommendationMeals,
+      setRecommendationMeals,
+      recommendationDrinks,
+      setRecommendationDrinks,
     }),
     [
       titleHeader,
@@ -33,6 +39,10 @@ function Provider({ children }) {
       setRecipesSearch,
       recipesData,
       setRecipesData,
+      recommendationMeals,
+      setRecommendationMeals,
+      recommendationDrinks,
+      setRecommendationDrinks,
     ],
   );
 

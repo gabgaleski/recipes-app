@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import copy from 'clipboard-copy';
 import YouTube from 'react-youtube';
@@ -7,12 +7,13 @@ import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import useLocalStorage from '../hooks/useLocalStorage';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import '../styles/Details.css';
+import Context from '../context/Context';
+import Carousel from './Carousel';
 
 function RecipeDetails() {
   const [idDrinks, setIdDrinks] = useState([]);
   const [idMeals, setIdMeals] = useState([]);
-  const [recommendationMeals, setRecommendationMeals] = useState([]);
-  const [recommendationDrinks, setRecommendationDrinks] = useState([]);
   const [copyRecipe, setCopyRecipe] = useState(false);
   const [favoritMealOrDrink, setFavoriteMealOrDrink] = useState([]);
   const [saveFavorit, setSaveFavorit] = useLocalStorage('favoriteRecipes', []);
@@ -20,6 +21,7 @@ function RecipeDetails() {
   const history = useHistory();
   const namePage = location.pathname.includes('drinks') ? 'Drink' : 'Meal';
   const id = `id${namePage}`;
+  const { setRecommendationMeals, setRecommendationDrinks } = useContext(Context);
 
   useEffect(() => {
     const handleChange = async () => {
@@ -50,7 +52,7 @@ function RecipeDetails() {
       }
     };
     handleChange();
-  }, [location.pathname]);
+  }, [location.pathname, setRecommendationDrinks, setRecommendationMeals]);
 
   const copyLink = () => {
     const local = location.pathname;
@@ -94,14 +96,49 @@ function RecipeDetails() {
         .push(`/meals/${location.pathname.match(/\d+/g)[0]}/in-progress`);
     } else { history.push(`/drinks/${location.pathname.match(/\d+/g)[0]}/in-progress`); }
   };
-  const magicNumberSix = 6;
   return (
-    <div>
+    <div className="details-container">
+      <div className="div-ingredients">
+        <div className="title-div-ingredients">
+          {ingredients.length > 0 && <h4>Ingredients</h4>}
+        </div>
+        <div className="ingredients-container">
+          {ingredients.map((ingredient, index) => (
+            <li
+              key={ ingredient }
+            >
+              {`${ingredient} : ${measurements[index][1]}`}
+            </li>
+          ))}
+        </div>
+      </div>
+      <div className="div-ingredients">
+        <div className="title-div-ingredients">
+          {ingredientsMeasl.length > 0 && <h4>Ingredients</h4>}
+        </div>
+        <div className="ingredients-container">
+          {ingredientsMeasl.map((ingredien, index) => (
+            <li
+              key={ ingredien[0] }
+              data-testid={ `${index}-ingredient-name-and-measure` }
+            >
+              {`${ingredien[1]}: ${measurementsMeals[index][1]}`}
+            </li>
+          ))}
+        </div>
+      </div>
       {idDrinks.length > 0 ? idDrinks.map(
         (element) => {
           switch (element[0]) {
           case 'strDrink':
-            return <h1 data-testid="recipe-title">{element[1]}</h1>;
+            return (
+              <h1
+                className="title-recipe"
+                data-testid="recipe-title"
+              >
+                {element[1]}
+              </h1>
+            );
           case 'strDrinkThumb':
             return (<img
               src={ element[1] }
@@ -110,26 +147,25 @@ function RecipeDetails() {
               className="recipePhoto"
             />);
           case 'strCategory':
-            return <h3 data-testid="recipe-category">{element[1]}</h3>;
+            return <h5 className="caterg" data-testid="recipe-category">{element[1]}</h5>;
           case 'strAlcoholic':
-            return <h3 data-testid="recipe-category">{element[1]}</h3>;
+            return <h5 className="alcoho" data-testid="recipe-category">{element[1]}</h5>;
           case 'strInstructions':
-            return <li data-testid="instructions">{element[1]}</li>;
+            return (
+              <div className="div-ingredients">
+                <div className="title-div-ingredients">
+                  <h4>Instructions</h4>
+                </div>
+                <div className="ingredients-container">
+                  <p data-testid="instructions">{element[1]}</p>
+                </div>
+              </div>
+            );
           default: return null;
           }
         },
       )
-        : idMeals.map((element, index) => {
-          if (element[0].includes('Ingredient')) {
-            return (
-              <li
-                key={ element[0] }
-                data-testid={ `${index}-ingredient-name-and-measure` }
-              >
-                {element[1]}
-              </li>
-            );
-          }
+        : idMeals.map((element) => {
           if (element[0] === 'strYoutube') {
             const getUrl = element[1];
             const delimiter = 'watch?v=';
@@ -141,7 +177,14 @@ function RecipeDetails() {
           }
           switch (element[0]) {
           case 'strMeal':
-            return <h1 data-testid="recipe-title">{element[1]}</h1>;
+            return (
+              <h1
+                className="title-recipe"
+                data-testid="recipe-title"
+              >
+                {element[1]}
+              </h1>
+            );
           case 'strMealThumb':
             return (<img
               src={ element[1] }
@@ -150,89 +193,43 @@ function RecipeDetails() {
               className="recipePhoto"
             />);
           case 'strCategory':
-            return <h3 data-testid="recipe-category">{element[1]}</h3>;
+            return <h5 className="caterg" data-testid="recipe-category">{element[1]}</h5>;
           case 'strInstructions':
-            return <li data-testid="instructions">{element[1]}</li>;
+            return (
+              <div className="div-ingredients">
+                <div className="title-div-ingredients">
+                  <h4>Instructions</h4>
+                </div>
+                <div className="ingredients-container">
+                  <p data-testid="instructions">{element[1]}</p>
+                </div>
+              </div>
+            );
           default: return null;
           }
         })}
-      <div>
-        {ingredients.map((ingredient, index) => (
-          <li
-            key={ ingredient }
-          >
-            {`${ingredient} : ${measurements[index][1]}`}
-          </li>
-        ))}
+      <h3>Recommended</h3>
+      <Carousel />
+      <div className="buttons-container">
+        <button
+          data-testid="start-recipe-btn"
+          className="buttonStart"
+          onClick={ handleRedirect }
+        >
+          Start Recipe
+        </button>
+        { copyRecipe && <p>Link copied!</p>}
+        <button data-testid="share-btn" onClick={ copyLink }>
+          <img src={ shareIcon } alt="Botao de Compartilhar" />
+        </button>
+        <button onClick={ favoriteRecipe }>
+          <img
+            data-testid="favorite-btn"
+            src={ saveFavorit.some((e) => e.id === location.pathname.match(/\d+/g)[0]) ? blackHeartIcon : whiteHeartIcon }
+            alt="Botao de Favoritar"
+          />
+        </button>
       </div>
-      <div>
-        {ingredientsMeasl.map((ingredien, index) => (
-          <li
-            key={ ingredien[0] }
-            data-testid={ `${index}-ingredient-name-and-measure` }
-          >
-            {`${ingredien}: ${measurementsMeals[index][1]}`}
-          </li>
-        ))}
-      </div>
-      <div className="carousel">
-        {
-          recommendationMeals.slice(0, magicNumberSix).map((recommendation, index) => (
-            <div
-              className="displayCard"
-              data-testid={ `${index}-recommendation-card` }
-              key={ recommendation.idMeals }
-            >
-              <h2 data-testid={ `${index}-recommendation-title` }>
-                {recommendation.strMeal}
-              </h2>
-              <img
-                src={ recommendation.strMealThumb }
-                alt={ recommendation.strArea }
-                className="recommendationImage"
-              />
-            </div>
-          ))
-        }
-      </div>
-      <div className="carousel">
-        {
-          recommendationDrinks.slice(0, magicNumberSix).map((recommendation, index) => (
-            <div
-              key={ recommendation.idDrink }
-              className="displayCard"
-              data-testid={ `${index}-recommendation-card` }
-            >
-              <h2 data-testid={ `${index}-recommendation-title` }>
-                {recommendation.strDrink}
-              </h2>
-              <img
-                src={ recommendation.strDrinkThumb }
-                alt={ recommendation.strArea }
-                className="recommendationImage"
-              />
-            </div>
-          ))
-        }
-      </div>
-      <button
-        data-testid="start-recipe-btn"
-        className="buttonStart"
-        onClick={ handleRedirect }
-      >
-        Start Recipe
-      </button>
-      { copyRecipe && <p>Link copied!</p>}
-      <button data-testid="share-btn" onClick={ copyLink }>
-        <img src={ shareIcon } alt="Botao de Compartilhar" />
-      </button>
-      <button onClick={ favoriteRecipe }>
-        <img
-          data-testid="favorite-btn"
-          src={ saveFavorit.some((e) => e.id === location.pathname.match(/\d+/g)[0]) ? blackHeartIcon : whiteHeartIcon }
-          alt="Botao de Favoritar"
-        />
-      </button>
     </div>
   );
 }
