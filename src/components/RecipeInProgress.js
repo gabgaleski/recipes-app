@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import YouTube from 'react-youtube';
 import useLocalStorage from '../hooks/useLocalStorage';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import '../styles/Details.css';
 
 function RecipeInProgress(props) {
   const [currentRecipe, setCurrentRecipe] = useState(null);
@@ -17,23 +19,19 @@ function RecipeInProgress(props) {
   const [getLocalFav, setGetLocalFav] = useState([]);
   const history = useHistory();
   const location = useLocation();
-
   const numIngredientes = 20;
   const ingredientesIndex = useMemo(() => Array.from(
     { length: numIngredientes },
     (_, index) => `strIngredient${index + 1}`,
   ), []);
-
   const { match: { params: { id } }, currentPage } = props;
 
-  // chama API
   async function fetchAPI(url) {
     const response = await fetch(url);
     const data = await response.json();
     return data;
   }
 
-  // atualiza o estado das variáveis
   useEffect(() => {
     if (localStorage.getItem('favoriteRecipes')) {
       setGetLocalFav(JSON.parse(localStorage.getItem('favoriteRecipes')));
@@ -62,7 +60,6 @@ function RecipeInProgress(props) {
     updateIngredientCompletion();
   }, [meal, drink, id, currentPage, ingredientesIndex, currentRecipe]);
 
-  // busca os detalhes da receita da api
   useEffect(() => {
     async function fetchDataApi() {
       let apiURL = '';
@@ -80,7 +77,6 @@ function RecipeInProgress(props) {
     fetchDataApi();
   }, [currentPage, id]);
 
-  // lida com a alteração do estado dos ingredientes selecionados
   const handleChangeCheckbox = (ingredients) => {
     const modifiedIngredients = concludedIngredients.includes(ingredients)
       ? concludedIngredients.filter(
@@ -123,34 +119,28 @@ function RecipeInProgress(props) {
     }
   };
 
-  // renderiaza a lista de ingredientes
   function renderIngredients() {
     return ingredientesIndex.map((ingredient, index) => {
       const currentIngredientName = currentRecipe[ingredient];
       if (currentIngredientName) {
         const isChecked = concludedIngredients.includes(currentIngredientName);
         const labelStyle = isChecked
-          ? {
-            display: 'flex',
-            gap: 10,
+          ? { gap: 10,
             textDecoration: 'line-through solid rgb(0, 0, 0)',
           }
-          : {
-            display: 'flex',
-            gap: 10,
-          };
+          : { gap: 10 };
         return (
           <label
             key={ currentIngredientName }
             data-testid={ `${index}-ingredient-step` }
             style={ labelStyle }
           >
-            <p>{currentIngredientName}</p>
             <input
               type="checkbox"
               checked={ isChecked }
               onChange={ () => handleChangeCheckbox(currentIngredientName) }
             />
+            {currentIngredientName}
           </label>
         );
       }
@@ -164,7 +154,17 @@ function RecipeInProgress(props) {
     }
 
     const { strMeal, strMealThumb, strDrink, strDrinkThumb, strCategory,
-      strInstructions } = currentRecipe;
+      strInstructions, strYoutube } = currentRecipe;
+
+    const returnVideo = () => {
+      const getUrl = strYoutube;
+      const delimiter = 'watch?v=';
+      const partes = getUrl.split(delimiter);
+      const codigoVideo = partes[1];
+      return (
+        <YouTube title="Video" videoId={ codigoVideo } />
+      );
+    };
 
     const handleCopyLink = async () => {
       const completeURL = window.location.href;
@@ -188,12 +188,19 @@ function RecipeInProgress(props) {
           doneDate: currentDate.toISOString(),
           tags: currentRecipe.strTags ? currentRecipe.strTags.split(',') : [],
         }]);
+      localStorage.removeItem('meals');
+      localStorage.removeItem('drinks');
       history.push('/done-recipes');
     };
 
     return (
-      <>
-        <h2 data-testid="recipe-title">{currentPage === 'meals' ? strMeal : strDrink}</h2>
+      <div className="details-container">
+        <h2
+          className="title-recipe"
+          data-testid="recipe-title"
+        >
+          {currentPage === 'meals' ? strMeal : strDrink}
+        </h2>
         <img
           className="image"
           src={ currentPage === 'meals' ? strMealThumb : strDrinkThumb }
@@ -201,13 +208,24 @@ function RecipeInProgress(props) {
           data-testid="recipe-photo"
         />
         <h4 data-testid="recipe-category">{strCategory}</h4>
-        <h3>Ingredientes</h3>
-        {renderIngredients()}
-        <h3>Instruções</h3>
-        <p data-testid="instructions">{strInstructions}</p>
+        <div className="div-ingredients">
+          <div className="title-div-ingredients">
+            <h4>Ingredients</h4>
+          </div>
+          <div className="ingredients-container">
+            {renderIngredients()}
+          </div>
+        </div>
+        <div className="div-ingredients">
+          <div className="title-div-ingredients">
+            <h4>Instruções</h4>
+          </div>
+          <div className="ingredients-container">
+            <p data-testid="instructions">{strInstructions}</p>
+          </div>
+        </div>
         <span>{errorNotification}</span>
-
-        <section>
+        <section className="buttons-container">
           <button
             src={ shareIcon }
             type="button"
@@ -224,16 +242,18 @@ function RecipeInProgress(props) {
           >
             <img src={ getLocalFav.some((e) => e.id === location.pathname.match(/\d+/g)[0]) ? blackHeartIcon : whiteHeartIcon } alt="Botao Favoritar" />
           </button>
-          <button
-            type="button"
-            data-testid="finish-recipe-btn"
-            onClick={ () => concludeRecipe() }
-            disabled={ !allIngredientsCompleted }
-          >
-            Finalizar Receita
-          </button>
         </section>
-      </>
+        { location.pathname.includes('meals') && returnVideo()}
+        <button
+          className="buttonStart"
+          type="button"
+          data-testid="finish-recipe-btn"
+          onClick={ () => concludeRecipe() }
+          disabled={ !allIngredientsCompleted }
+        >
+          Finalizar Receita
+        </button>
+      </div>
     );
   }
   return <div>{renderPage()}</div>;

@@ -4,6 +4,7 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
+  gap: 15px;
 }
 
 .details-container > img {
@@ -51,6 +52,12 @@
 }
 
 .ingredients-container > p {
+  margin: 10px;
+}
+
+.ingredients-container > label {
+  display: flex;
+  align-items: center;
   margin: 10px;
 }
 

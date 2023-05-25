@@ -1,17 +1,18 @@
 import React, { useContext } from 'react';
 import { Carousel, CarouselItem } from 'react-bootstrap';
+import { Link, useLocation } from 'react-router-dom';
 import Context from '../context/Context';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Carousel1() {
   const { recommendationMeals, recommendationDrinks } = useContext(Context);
-
   const magicNumberSix = 6;
+  const location = useLocation();
 
   return (
     <Carousel className="container-carousel">
       {
-        recommendationMeals.length > 0 ? recommendationMeals
+        location.pathname.includes('drinks') ? recommendationMeals
           .slice(0, magicNumberSix).map((recommendation, index) => (
             <CarouselItem
               data-testid={ `${index}-recommendation-card` }
@@ -23,11 +24,12 @@ function Carousel1() {
               >
                 {recommendation.strMeal}
               </h2>
-              <img
-                src={ recommendation.strMealThumb }
-                alt={ recommendation.strArea }
-              />
-
+              <Link to={ `/meals/${recommendation.idMeal}` }>
+                <img
+                  src={ recommendation.strMealThumb }
+                  alt={ recommendation.strArea }
+                />
+              </Link>
             </CarouselItem>
           ))
           : recommendationDrinks.slice(0, magicNumberSix)
@@ -42,11 +44,13 @@ function Carousel1() {
                 >
                   {recommendation.strDrink}
                 </h2>
-                <img
-                  src={ recommendation.strDrinkThumb }
-                  alt={ recommendation.strArea }
-                  className="recommendationImage"
-                />
+                <Link to={ `/drinks/${recommendation.idDrink}` }>
+                  <img
+                    src={ recommendation.strDrinkThumb }
+                    alt={ recommendation.strArea }
+                    className="recommendationImage"
+                  />
+                </Link>
               </CarouselItem>
             ))
       }

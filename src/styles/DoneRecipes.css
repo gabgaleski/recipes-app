@@ -1,4 +1,59 @@
-.image-recipe {
-  height: 100px;
-  width: 100px;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.done-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons-container {
+  display: flex;
+  width: 80%;
+  margin-bottom: 4%;
+}
+
+.card-container {
+  border: 0.517989px solid #B1B1B1;
+  border-radius: 5px;
+  display: flex;
+  width: 95%;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+.infos-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 3px;
+  width: 100%;
+}
+
+.first-infos {
+  display: flex;
+  justify-content: space-between;
+}
+
+.img-container {
+  width: 100%;
+}
+
+.tags-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+
+.alcoho {
+  font-size: 14px;
+  height: 10px;
+}
+
+.recipe-name {
+  text-decoration: none;
 }
