@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import shareIcon from '../images/shareIcon.svg';
+import shareIcon from '../images/shareDone.svg';
 import '../styles/DoneRecipes.css';
 import AllDone from '../images/AllDone.svg';
 import AllDrinks from '../images/AllDrinksDone.svg';
@@ -30,26 +30,24 @@ function DoneRecipes() {
 
   return (
     <div className="done-container">
-      <div className="buttons-container">
+      <div className="buttons-container-done">
+        <button
+          data-testid="filter-by-all-btn"
+          onClick={ () => setRenderRecipes(recipesDone) }
+        >
+          <img src={ AllDone } alt="Button Filter Meals" />
+        </button>
         <button
           data-testid="filter-by-meal-btn"
           onClick={ () => filterRecipes('meal') }
         >
-          <img src={ AllDone } alt="Button Filter All" />
+          <img src={ All } alt="Button Filter All" />
         </button>
         <button
           data-testid="filter-by-drink-btn"
           onClick={ () => filterRecipes('drink') }
         >
           <img src={ AllDrinks } alt="Button Filter Drinks" />
-
-        </button>
-        <button
-          data-testid="filter-by-all-btn"
-          onClick={ () => setRenderRecipes(recipesDone) }
-        >
-          <img src={ All } alt="Button Filter Meals" />
-
         </button>
       </div>
       {renderRecipes && renderRecipes.map((recipe, index) => {
@@ -78,6 +76,7 @@ function DoneRecipes() {
                   </Link>
                   <button onClick={ () => copyLink(`http://localhost:3000/drinks/${recipe.id}`) }>
                     <img
+                      className="image-recipe"
                       data-testid={ `${index}-horizontal-share-btn` }
                       src={ shareIcon }
                       alt="Compartilhar receita"
@@ -85,21 +84,28 @@ function DoneRecipes() {
                   </button>
                 </div>
                 <p data-testid={ `${index}-horizontal-top-text` }>{recipe.category}</p>
-                <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
+                <p
+                  className="date-done"
+                  data-testid={ `${index}-horizontal-done-date` }
+                >
+                  {recipe.doneDate}
+                </p>
                 <div className="tags-container">
                   <p
+                    className="date-done"
                     data-testid={ `${index}-${recipe.tags[0]}-horizontal-tag` }
                   >
                     {recipe.tags[0]}
                   </p>
                   <p
+                    className="date-done"
                     data-testid={ `${index}-${recipe.tags[1]}-horizontal-tag` }
                   >
                     {recipe.tags[1]}
                   </p>
                 </div>
                 <p
-                  className="alcoho"
+                  className="alcoho date-done"
                   data-testid={ `${index}-horizontal-top-text` }
                 >
                   {recipe.alcoholicOrNot}
@@ -109,52 +115,57 @@ function DoneRecipes() {
           );
         }
         return (
-          <div key={ recipe.id }>
-            <Link to={ `/meals/${recipe.id}` }>
-              <img
-                className="image-recipe"
-                data-testid={ `${index}-horizontal-image` }
-                src={ recipe.image }
-                alt="Imagem da Receita"
-              />
-            </Link>
-            <p
-              data-testid={ `${index}-horizontal-top-text` }
-            >
-              {`${recipe.nationality} - ${recipe.category}`}
-
-            </p>
-            <Link to={ `/meals/${recipe.id}` }>
-              <h4
-                data-testid={ `${index}-horizontal-name` }
+          <div className="card-container" key={ recipe.id }>
+            <div className="img-container">
+              <Link to={ `/meals/${recipe.id}` }>
+                <img
+                  className="image-recipe"
+                  data-testid={ `${index}-horizontal-image` }
+                  src={ recipe.image }
+                  alt="Imagem da Receita"
+                />
+              </Link>
+            </div>
+            <div className="infos-container">
+              <div className="first-infos">
+                <Link to={ `/meals/${recipe.id}` }>
+                  <h4
+                    className="recipe-name"
+                    data-testid={ `${index}-horizontal-name` }
+                  >
+                    {recipe.name}
+                  </h4>
+                </Link>
+                <button onClick={ () => copyLink(`http://localhost:3000/meals/${recipe.id}`) }>
+                  <img
+                    data-testid={ `${index}-horizontal-share-btn` }
+                    src={ shareIcon }
+                    alt="Compartilhar receita"
+                  />
+                </button>
+              </div>
+              <p data-testid={ `${index}-horizontal-top-text` }>
+                {`${recipe.nationality} - ${recipe.category}`}
+              </p>
+              <p
+                className="date-done"
+                data-testid={ `${index}-horizontal-done-date` }
               >
-                {recipe.name}
+                {recipe.doneDate}
 
-              </h4>
-            </Link>
-            <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
-            <button onClick={ () => copyLink(`http://localhost:3000/meals/${recipe.id}`) }>
-              <img
-                data-testid={ `${index}-horizontal-share-btn` }
-                src={ shareIcon }
-                alt="Compartilhar receita"
-              />
-
-            </button>
-
-            <p
-              data-testid={ `${index}-${recipe.tags[0]}-horizontal-tag` }
-            >
-              {recipe.tags[0]}
-
-            </p>
-            <p
-              data-testid={ `${index}-${recipe.tags[1]}-horizontal-tag` }
-            >
-              {recipe.tags[1]}
-
-            </p>
-
+              </p>
+              <p
+                className="date-done"
+                data-testid={ `${index}-${recipe.tags[0]}-horizontal-tag` }
+              >
+                {recipe.tags[0]}
+              </p>
+              <p
+                data-testid={ `${index}-${recipe.tags[1]}-horizontal-tag` }
+              >
+                {recipe.tags[1]}
+              </p>
+            </div>
           </div>
         );
       })}

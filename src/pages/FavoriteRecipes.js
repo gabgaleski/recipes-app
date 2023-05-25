@@ -2,9 +2,12 @@ import React, { useContext, useEffect, useMemo, useState, useCallback } from 're
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Context from '../context/Context';
-import shareIcon from '../images/shareIcon.svg';
+import shareIcon from '../images/shareDone.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-import '../styles/FavoritesRecipes.css';
+import '../styles/DoneRecipes.css';
+import All from '../images/AllDone.svg';
+import AllDrinks from '../images/AllDrinksDone.svg';
+import AllMeals from '../images/AllMealsDone.svg';
 
 function FavoriteRecipes() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
@@ -60,66 +63,75 @@ function FavoriteRecipes() {
   return (
     <div>
       <Header />
-      <form>
-        <fieldset>
+      <div className="done-container">
+        <div className="buttons-container-done">
           <button
             type="button"
             data-testid="filter-by-all-btn"
             onClick={ () => handleFilter('All') }
           >
-            All
+            <img src={ All } alt="Imagem do botao filtrar" />
           </button>
           <button
             type="button"
             data-testid="filter-by-meal-btn"
             onClick={ () => handleFilter('meal') }
           >
-            Meals
+            <img src={ AllMeals } alt="Imagem do botao filtrar Meals" />
           </button>
           <button
             type="button"
             data-testid="filter-by-drink-btn"
             onClick={ () => handleFilter('Drinks') }
           >
-            Drinks
+            <img src={ AllDrinks } alt="Imagem do botao filtrar Drinks" />
           </button>
-        </fieldset>
-        <div>
-          {
-            favoriteRecipes.map((recipe, index) => (
-              <div key={ index }>
+        </div>
+        {
+          favoriteRecipes.map((recipe, index) => (
+            <div className="card-container" key={ index }>
+              <div className="img-container">
+                <Link
+                  to={ recipe.type === 'meal'
+                    ? `/meals/${recipe.id}` : `/drinks/${recipe.id}` }
+                >
+                  <img
+                    data-testid={ `${index}-horizontal-image` }
+                    src={ recipe.image }
+                    alt={ recipe.name }
+                    className="image-recipe image-fav"
+                  />
+                </Link>
+              </div>
+              <div className="infos-container">
+                <div className="first-infos">
+                  <Link
+                    to={ recipe.type === 'meal'
+                      ? `/meals/${recipe.id}` : `/drinks/${recipe.id}` }
+                  >
+                    <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
+                  </Link>
+                  <button
+                    type="button"
+                    src={ shareIcon }
+                    data-testid={ `${index}-horizontal-share-btn` }
+                    onClick={ () => handleShareBtn(
+                      recipe.type === 'meal'
+                        ? `/meals/${recipe.id}` : `/drinks/${recipe.id}`,
+                    ) }
+                  >
+                    <img
+                      src={ shareIcon }
+                      alt="Share Icon"
+                    />
+                  </button>
+                </div>
                 <p>{recipe.type}</p>
                 <p data-testid={ `${index}-horizontal-top-text` }>
                   {recipe.type === 'meal'
                     ? `${recipe.nationality} - ${recipe.category}`
                     : `${recipe.alcoholicOrNot}`}
                 </p>
-                <Link
-                  to={ recipe.type === 'meal'
-                    ? `/meals/${recipe.id}` : `/drinks/${recipe.id}` }
-                >
-                  <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
-                  <img
-                    data-testid={ `${index}-horizontal-image` }
-                    src={ recipe.image }
-                    alt={ recipe.name }
-                    className="favorite-recipe-img"
-                  />
-                </Link>
-                <button
-                  type="button"
-                  src={ shareIcon }
-                  data-testid={ `${index}-horizontal-share-btn` }
-                  onClick={ () => handleShareBtn(
-                    recipe.type === 'meal'
-                      ? `/meals/${recipe.id}` : `/drinks/${recipe.id}`,
-                  ) }
-                >
-                  <img
-                    src={ shareIcon }
-                    alt="Share Icon"
-                  />
-                </button>
                 <button
                   type="button"
                   src={ blackHeartIcon }
@@ -131,11 +143,11 @@ function FavoriteRecipes() {
                     alt="Favorite Icon"
                   />
                 </button>
-              </div>))
-          }
-        </div>
-      </form>
-      {alert && <p>Link copied!</p>}
+              </div>
+            </div>))
+        }
+        {alert && <p>Link copied!</p>}
+      </div>
     </div>
   );
 }

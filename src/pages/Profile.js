@@ -3,6 +3,10 @@ import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Context from '../context/Context';
+import doneProfile from '../images/doneProfile.svg';
+import favoriteProfile from '../images/favoriteProfile.svg';
+import logoutProfile from '../images/logoutProfile.svg';
+import '../styles/Profile.css';
 
 function Profile() {
   const { setTitleHeader, setLoadingSearch } = useContext(Context);
@@ -36,35 +40,37 @@ function Profile() {
   return (
     <div>
       <Header />
-      <p
-        data-testid="profile-email"
-      >
-        {getEmail()}
+      <div className="profile-body">
+        <p
+          data-testid="profile-email"
+        >
+          {getEmail()}
+        </p>
+        <button
+          type="button"
+          data-testid="profile-done-btn"
+          onClick={ doneRecipesRoute }
+        >
+          <img src={ doneProfile } alt="Botao para ir a pagina Done" />
+        </button>
+        <hr />
+        <button
+          type="button"
+          data-testid="profile-favorite-btn"
+          onClick={ favoriteRecipesRoute }
+        >
+          <img src={ favoriteProfile } alt="Botao para ir a pagina Favorite" />
+        </button>
+        <hr />
 
-      </p>
-      <button
-        type="button"
-        data-testid="profile-done-btn"
-        onClick={ doneRecipesRoute }
-      >
-        Done Recipes
-      </button>
-
-      <button
-        type="button"
-        data-testid="profile-favorite-btn"
-        onClick={ favoriteRecipesRoute }
-      >
-        Favorite Recipes
-      </button>
-
-      <button
-        type="button"
-        data-testid="profile-logout-btn"
-        onClick={ logoutRoute }
-      >
-        Logout
-      </button>
+        <button
+          type="button"
+          data-testid="profile-logout-btn"
+          onClick={ logoutRoute }
+        >
+          <img src={ logoutProfile } alt="Botao para deslogar" />
+        </button>
+      </div>
       <Footer />
     </div>
   );
