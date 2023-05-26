@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-.buttons-container {
+.buttons-container-recipes {
   display: flex;
   gap: 13px;
   justify-content: center;
@@ -23,8 +23,22 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 45vw;
+  width: 45%;
   margin: 5px;
+  height: 25%;
+  }
+
+.cards-container > a {
+  height: 100%;
+}
+
+.cards-container p {
+  text-align: center;
+  font-size: 19px;
+  max-width: 15ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .image-card {

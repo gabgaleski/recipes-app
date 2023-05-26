@@ -111,7 +111,7 @@ export default function Recipes() {
 
   return (
     <div>
-      <div className="buttons-container">
+      <div className="buttons-container-recipes">
         <div>
           <button
             data-testid="All-category-filter"
@@ -163,11 +163,11 @@ export default function Recipes() {
                         alt={ e.strMeal }
                       />
                     </Link>
-                    <h2
+                    <p
                       data-testid={ `${index}-card-name` }
                     >
                       { e.strMeal }
-                    </h2>
+                    </p>
                   </div>))
             }
           </div>
@@ -190,11 +190,11 @@ export default function Recipes() {
                         alt={ e.strDrink }
                       />
                     </Link>
-                    <h2
+                    <p
                       data-testid={ `${index}-card-name` }
                     >
                       { e.strDrink }
-                    </h2>
+                    </p>
                   </div>))
             }
           </div>

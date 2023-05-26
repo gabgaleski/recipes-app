@@ -9,6 +9,9 @@ import logoRecipe from '../images/logoRecipe.svg';
 import iconProfile from '../images/iconProfile.svg';
 import drinkIcon from '../images/drinkIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
+import doneProfile from '../images/doneRecipeHeader.svg';
+import favoriteProfile from '../images/favoriteRecipeHeader.svg';
+import profileHeader from '../images/profileHeader.svg';
 
 function Header() {
   const { titleHeader, loadingSearch, textSearch, setTextSearch } = useContext(Context);
@@ -22,6 +25,22 @@ function Header() {
     }
   };
 
+  const changeLogoImg = () => {
+    switch (titleHeader) {
+    case 'Meals':
+      return mealIcon;
+    case 'Drinks':
+      return drinkIcon;
+    case 'Favorite Recipes':
+      return favoriteProfile;
+    case 'Done Recipes':
+      return doneProfile;
+    case 'Profile':
+      return profileHeader;
+    default:
+      return mealIcon;
+    }
+  };
   return (
     <div className="all-header-container">
       <div className="fixed-header">
@@ -56,7 +75,7 @@ function Header() {
       <div className="div-image-title">
         <img
           className="image-title"
-          src={ titleHeader === 'Drinks' ? drinkIcon : mealIcon }
+          src={ changeLogoImg() }
           alt="Logo da pagina"
         />
       </div>

@@ -62,7 +62,6 @@ function Profile() {
           <img src={ favoriteProfile } alt="Botao para ir a pagina Favorite" />
         </button>
         <hr />
-
         <button
           type="button"
           data-testid="profile-logout-btn"
