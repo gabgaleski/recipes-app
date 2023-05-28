@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import useLocalStorage from '../hooks/useLocalStorage';
 import shareIcon from '../images/shareIcon.svg';
@@ -8,7 +7,7 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import '../styles/Details.css';
 
-function RecipeInProgress(props) {
+function RecipeInProgress() {
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [concludedIngredients, setConcludedIngredients] = useState([]);
   const [meal, setMeal] = useLocalStorage('meals');
@@ -24,8 +23,8 @@ function RecipeInProgress(props) {
     { length: numIngredientes },
     (_, index) => `strIngredient${index + 1}`,
   ), []);
-  const { match: { params: { id } }, currentPage } = props;
-
+  const currentPage = location.pathname.includes('meals') ? 'meals' : 'drinks';
+  const { id } = useParams();
   async function fetchAPI(url) {
     const response = await fetch(url);
     const data = await response.json();
@@ -81,21 +80,13 @@ function RecipeInProgress(props) {
     const modifiedIngredients = concludedIngredients.includes(ingredients)
       ? concludedIngredients.filter(
         (currentIngredient) => currentIngredient !== ingredients,
-      )
-      : [...concludedIngredients, ingredients];
+      ) : [...concludedIngredients, ingredients];
     setConcludedIngredients(modifiedIngredients);
     if (currentPage === 'meals') {
-      setMeal({
-        ...meal,
-        [id]:
-        [...modifiedIngredients],
-      });
+      setMeal({ ...meal, [id]: [...modifiedIngredients] });
     }
     if (currentPage === 'drinks') {
-      setDrinks({
-        [id]:
-        [...modifiedIngredients],
-      });
+      setDrinks({ [id]: [...modifiedIngredients] });
     }
   };
 
@@ -125,8 +116,7 @@ function RecipeInProgress(props) {
       if (currentIngredientName) {
         const isChecked = concludedIngredients.includes(currentIngredientName);
         const labelStyle = isChecked
-          ? { gap: 10,
-            textDecoration: 'line-through solid rgb(0, 0, 0)',
+          ? { gap: 10, textDecoration: 'line-through solid rgb(0, 0, 0)',
           }
           : { gap: 10 };
         return (
@@ -152,10 +142,8 @@ function RecipeInProgress(props) {
     if (!currentRecipe) {
       return null;
     }
-
     const { strMeal, strMealThumb, strDrink, strDrinkThumb, strCategory,
       strInstructions, strYoutube } = currentRecipe;
-
     const returnVideo = () => {
       const getUrl = strYoutube;
       const delimiter = 'watch?v=';
@@ -258,13 +246,5 @@ function RecipeInProgress(props) {
   }
   return <div>{renderPage()}</div>;
 }
-RecipeInProgress.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  currentPage: PropTypes.string.isRequired,
-};
 
 export default RecipeInProgress;
