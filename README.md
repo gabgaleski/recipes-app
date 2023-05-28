@@ -1,6 +1,9 @@
 # :man_cook: Recipes App :plate_with_cutlery:
 
 <br>
+Utilize no Mobile, css ainda em construição para Desktop
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c6643103-9325-42c3-a938-4c48681fdbe1/deploy-status)](https://app.netlify.com/sites/gabgaleski-recipes-app/deploys)
 
 # :camera_flash: Imagens do Projeto
 
