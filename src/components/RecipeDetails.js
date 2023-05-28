@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import copy from 'clipboard-copy';
 import YouTube from 'react-youtube';
+import Swal from 'sweetalert2';
 import { FetchIdDrink, FetchIdMeals, allMeals, allDrinks } from '../services/APIsFetch';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
@@ -14,7 +15,6 @@ import Carousel from './Carousel';
 function RecipeDetails() {
   const [idDrinks, setIdDrinks] = useState([]);
   const [idMeals, setIdMeals] = useState([]);
-  const [copyRecipe, setCopyRecipe] = useState(false);
   const [favoritMealOrDrink, setFavoriteMealOrDrink] = useState([]);
   const [saveFavorit, setSaveFavorit] = useLocalStorage('favoriteRecipes', []);
   const location = useLocation();
@@ -57,7 +57,13 @@ function RecipeDetails() {
   const copyLink = () => {
     const local = location.pathname;
     copy(`http://localhost:3000${local}`);
-    setCopyRecipe(true);
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Link Copiado com sucesso!',
+      showConfirmButton: false,
+      timer: 1000,
+    });
   };
 
   const favoriteRecipe = () => {
@@ -218,7 +224,6 @@ function RecipeDetails() {
         >
           Start Recipe
         </button>
-        { copyRecipe && <p>Link copied!</p>}
         <button data-testid="share-btn" onClick={ copyLink }>
           <img src={ shareIcon } alt="Botao de Compartilhar" />
         </button>

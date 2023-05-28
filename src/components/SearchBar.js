@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import Context from '../context/Context';
 import {
   ingredientFetchMeal,
@@ -33,7 +34,13 @@ export default function SearchBar() {
     if (response[titleHeader.toLowerCase()] !== null) {
       setRecipesData(response[titleHeader.toLowerCase()]);
     } else {
-      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      return Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Sorry, we haven\'t found any recipes for these filters.',
+        showConfirmButton: false,
+        timer: 1000,
+      });
     }
     if (titleHeader === 'Meals' && response.meals.length === 1) {
       const { idMeal } = response.meals[0];

@@ -10,7 +10,7 @@ function Provider({ children }) {
   const [recipesData, setRecipesData] = useState([]);
   const [recommendationMeals, setRecommendationMeals] = useState([]);
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const values = useMemo(
     () => ({

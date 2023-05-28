@@ -71,7 +71,7 @@ describe('Testes do "SearchBar"', () => {
     expect(global.fetch).toHaveBeenCalled();
   });
 
-  it('Testando alerts para mais de um caracter no "First Letter"', () => {
+  it('Testando alerts para mais de um caracter no "First Letter"', async () => {
     const { history } = renderWithRouter(
       <Provider>
         <App />

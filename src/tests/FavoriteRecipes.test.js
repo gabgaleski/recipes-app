@@ -22,14 +22,13 @@ describe('Testa componente Favorites Recipes', () => {
         <FavoriteRecipes />
       </Provider>,
     );
-    const filterBtnAll = screen.getByRole('button', {
-      name: 'All',
+
+    const filterBtnAll = screen.getByTestId('filter-by-all-btn');
+    const filterBtnMeal = screen.getByRole('img', {
+      name: /imagem do botao filtrar meals/i,
     });
-    const filterBtnMeal = screen.getByRole('button', {
-      name: 'Meals',
-    });
-    const filterBtnDrink = screen.getByRole('button', {
-      name: 'Drinks',
+    const filterBtnDrink = screen.getByRole('img', {
+      name: /imagem do botao filtrar drinks/i,
     });
 
     expect(filterBtnAll).toBeInTheDocument();
@@ -83,14 +82,12 @@ describe('Testa componente Favorites Recipes', () => {
     const shareBtnDrink = await screen.findByTestId('1-horizontal-share-btn');
     const favBtnDrink = await screen.findByTestId('1-horizontal-favorite-btn');
 
-    const filterBtnAll = screen.getByRole('button', {
-      name: 'All',
+    const filterBtnAll = screen.getByTestId('filter-by-all-btn');
+    const filterBtnMeal = screen.getByRole('img', {
+      name: /imagem do botao filtrar meals/i,
     });
-    const filterBtnMeal = screen.getByRole('button', {
-      name: 'Meals',
-    });
-    const filterBtnDrink = screen.getByRole('button', {
-      name: 'Drinks',
+    const filterBtnDrink = screen.getByRole('img', {
+      name: /imagem do botao filtrar drinks/i,
     });
 
     act(() => {
