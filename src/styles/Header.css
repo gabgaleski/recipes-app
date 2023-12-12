@@ -22,7 +22,7 @@
 
 .img-recipe {
   display: flex;
-  justify-content: space-around;
+  padding: 2px;
   width: 50%;
 }
 
@@ -85,4 +85,21 @@
   font-weight: 700;
   height: 40% ;
   width: 80%;
+}
+
+@media screen and (min-width: 640px) {
+  .fixed-header {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .title-header {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #374151;
+  }
+
 }

@@ -28,6 +28,7 @@ function Carousel1() {
                 <img
                   src={ recommendation.strMealThumb }
                   alt={ recommendation.strArea }
+                  className="recommendationImage"
                 />
               </Link>
             </CarouselItem>

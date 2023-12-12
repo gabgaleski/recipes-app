@@ -94,3 +94,70 @@ iframe {
 .alcoho {
   order: 0;
 }
+
+@media screen and (min-width: 768px) {
+  .details-container > img {
+    position: inherit;
+    height: 30vh;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .title-recipe {
+    font-size: 30px;
+    top: 20%;
+  }
+
+  .ingredients-container {
+    width: 80%;
+  }
+  
+  .ingredients-container > li {
+    margin-left: 5%;
+    font-size: 20px;
+  }
+
+  .ingredients-container > p {
+    margin: 10px;
+    font-size: 20px;
+  }
+
+  .caterg {
+    font-size: 25px;
+  }
+
+  .alcoho {
+    font-size: 25px;
+  }
+
+  .title-div-ingredients {
+    width: 80%;
+  }
+
+  .title-div-ingredients > h4 {
+    font-size: 25px;
+  }
+
+  .title-recommendation {
+    font-size: 25px;
+  }
+
+  .container-carousel {
+    width: 80%;
+  }
+
+  .buttons-container {
+    width: 80%;
+  }
+
+  .recommendationImage {
+    height: 50vh;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  iframe {
+    width: 80vw;
+  }
+
+}

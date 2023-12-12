@@ -71,3 +71,34 @@
 .recipe-name {
   text-decoration: none;
 }
+
+@media screen and (min-width: 768px) {
+  .card-container {
+    width: 70%;
+  }
+
+  .infos-container {
+    margin-left: 20px;
+  }
+
+  .tags-container {
+    font-size: 16px;
+  }
+
+  .date-done {
+    font-size: 18px;
+  }
+
+  .recipe-name {
+    font-size: 30px;
+  }
+
+  .alcoho {
+    font-size: 20px;
+  }
+
+  .image-recipe {
+    width: 70%;
+  }
+  
+}
